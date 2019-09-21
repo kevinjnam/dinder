@@ -1,8 +1,8 @@
 import React from 'react';
 
-const MainContainer = ({ url, addFav, moveNext }) => (
+const MainContainer = ({ currentBusiness, addFav, moveNext }) => (
     <div>
-        <img src={url} height='400' width='400'></img>
+        <img src={currentBusiness.imageURL} height='400' width='400'></img>
         <button onClick={addFav}>Heart</button>
         <button onClick={moveNext}>Next</button>
     </div>

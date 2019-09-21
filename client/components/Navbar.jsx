@@ -1,9 +1,9 @@
-// import React from 'react';
+import React from 'react';
 
-// class Navbar extends Component {
-    
-// }
+const Navbar = ({ showFavs }) => (
+    <div>
+        <button onClick={showFavs}>Show Favs</button>
+    </div>
+);
 
-
-
-// export default Navbar
+export default Navbar;

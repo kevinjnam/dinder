@@ -13,7 +13,6 @@ class App extends Component {
         businessList: [],
         currentIndex: 0,
         favs: [],
-        currentBusiness: {}
       };
 
       this.showFavs = this.showFavs.bind(this);
@@ -26,9 +25,21 @@ class App extends Component {
     } 
 
     addFav() {
-        this.setState({currentIndex: this.state.currentIndex + 1})
-        console.log('addFav is clicked');
-        axios.post('/')
+        let favs = this.state.favs.slice();
+        favs.push(this.state.businessList[this.state.currentIndex])
+
+        this.setState({
+            currentIndex: this.state.currentIndex + 1,
+            favs
+        })
+
+        console.log('this.state.businessList[this.state.currentIndex]: ', this.state.businessList[this.state.currentIndex]);
+
+        axios.post('/favorites', this.state.businessList[this.state.currentIndex])
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => console.error);
     }
 
     moveNext() {
@@ -71,7 +82,6 @@ class App extends Component {
             console.log(this.state.businessList);
 
         })
-
         .catch(err => console.error);
 
     }

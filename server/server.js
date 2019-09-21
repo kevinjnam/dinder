@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 // route to favorites
-app.use('favorites/', favorites);
+app.use('/favorites', favorites);
 
 app.use('*', (req, res) => {
   res.status(404).send('Route not found');

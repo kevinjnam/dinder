@@ -1,10 +1,10 @@
-const webpack = require("webpack");
+// const webpack = require("webpack");
 const path = require("path");
+
 module.exports = {
     entry: "./client/index.js",
     output: {
-        path: path.resilve(__dirname, 'build'),
-        publicPath: '/build/',
+        path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js'
     },
     mode: process.env.NODE_ENV,
@@ -12,7 +12,7 @@ module.exports = {
         rules: [
             {
                 test: /\.jsx?/,
-                exclude: /node_modules/,
+                exclude: /(node_modules)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -23,7 +23,7 @@ module.exports = {
             {
                 test: /(css|scss)$/,
                 exclude: /node_modules/,
-                use: ['style-loader', 'css-loader', 'sass-loeader']
+                use: ['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     }

@@ -1,22 +1,24 @@
 const Pool = require('pg').Pool;
 const pool = new Pool({
-  connectionString: 'url'
+  connectionString:
+    'postgres://kpbrjtvt:tmU2ixXRIwrYp1_uBqvugQbY18KfYQwi@otto.db.elephantsql.com:5432/kpbrjtvt'
 });
 
+// get favorites
 const getFavorites = (req, res, next) => {
-  pool.query('SELECT * FROM favorites ORDER BY id'),
-    (error, favorites) => {
-      if (error) {
-        res.json(error);
-      } else {
-        res.locals.favorites = favorites.rows;
-        return next();
-      }
-    };
+  pool.query('SELECT * FROM favorites ORDER BY _id', (error, favorites) => {
+    if (error) {
+      res.json(error);
+    }
+    res.locals.favorites = favorites.rows;
+    return next();
+  });
 };
 
+// add favorite
 const addFavorite = (req, res, next) => {
-  pool.query('INSERT INTO favorites (url) VALUES $1', [url], error => {
+  const { favorite } = req.body;
+  pool.query('INSERT INTO favorites (url) VALUES $1', [favorite], error => {
     if (error) {
       res.json(error);
     } else {

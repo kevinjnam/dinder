@@ -6,12 +6,12 @@ const router = express.Router();
 
 // get favorites
 router.get('/', favoritesControllers.getFavorites, (req, res) => {
-  res.status(200).send(res.locals.favorites);
+  return res.status(200).json(res.locals.favorites);
 });
 
 // add favorites
 router.post('/', favoritesControllers.addFavorite, (req, res) => {
-  res.status(200).end();
+  return res.status(200).json('Success: favorite is added.');
 });
 
 module.exports = router;

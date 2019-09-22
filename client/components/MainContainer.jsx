@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const MainContainer = ({ currentBusiness, addFav, moveNext }) => (
-    <div>
-        <img src={currentBusiness.imageURL} height='500' width='500'></img>
-        <button onClick={addFav}>Heart</button>
-        <button onClick={moveNext}>Next</button>
-    </div>
-);
+class MainContainer extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+
+        // bind functions
+    }
+
+    render() {
+        // destructuring props
+        const { currentBusiness, showMoreDetail, addFav, moveNext} = this.props;
+        return (
+            <div>
+                <img src={currentBusiness.imageURL} onClick={() => showMoreDetail(currentBusiness.yelpid)} height='500' width='500'></img>
+                <button onClick={addFav}>Heart</button>
+                <button onClick={moveNext}>Next</button>
+            </div>
+        );
+    };
+}
 
 export default MainContainer;

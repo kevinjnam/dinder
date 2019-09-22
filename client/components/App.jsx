@@ -18,6 +18,7 @@ class App extends Component {
       };
 
       this.showFavs = this.showFavs.bind(this);
+      this.showMoreDetail = this.showMoreDetail.bind(this);
       this.addFav = this.addFav.bind(this);
       this.moveNext = this.moveNext.bind(this);
     }
@@ -26,6 +27,20 @@ class App extends Component {
         console.log('showFavs is clicked');
     } 
 
+    showMoreDetail(yelpid) {
+        // get current business detail from yelp api
+        axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/${yelpid}`, {
+            headers: {
+                Authorization: `Bearer ${key.API_KEY}`
+            }
+        }) 
+        .then((res) => {
+            console.log('IN SHOW MORE DETAIL DATA: ', res);
+        })
+        console.log('showMoreDetail is clicked');
+    }
+
+    // function invokes when the heart button is clicked in MainContainer
     addFav() {
         let favs = this.state.favs.slice();
         let visited = Object.assign(this.state.visited);
@@ -34,7 +49,8 @@ class App extends Component {
         visited[this.state.currentIndex] = true;
         
         let currentIndex = getRandomNum(MAX_SIZE);
-        // if currentIndex is already visited get another one
+
+        // if currentIndex is already stored in visited, get another one
         while(visited[currentIndex]) {
             currentIndex = getRandomNum(MAX_SIZE);
         }
@@ -45,8 +61,7 @@ class App extends Component {
             favs
         })
 
-        // console.log(this.state.favs);
-
+        // post new favorite which is current business to the database 
         axios.post('/favorites', this.state.businessList[this.state.currentIndex])
             .then(res => {
                 console.log(res.data);
@@ -54,9 +69,9 @@ class App extends Component {
             .catch(err => console.error);
     }
 
+    // function invokes when the next button is clicked in MainContainer
     moveNext() {
         let visited = Object.assign(this.state.visited);
-
         visited[this.state.currentIndex] = true;
         
         let currentIndex = getRandomNum(MAX_SIZE);
@@ -75,7 +90,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // get data from yelp api
+        // get data from yelp business endpoint
         axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${LOCATION_SEARCHED}`, {
             headers: {
                 Authorization: `Bearer ${key.API_KEY}`
@@ -86,53 +101,51 @@ class App extends Component {
                 limit: 50
             }
         }) 
-            .then((res) => {            
+            .then((res) => { 
+                // create state businessList with necessary infos           
                 let businessList = [];
-
                 for (let restaurant of res.data.businesses) {
                     const businessObj = {
                         yelpid: restaurant.id,
                         name: restaurant.name,
                         address: restaurant.location.display_address[0] + ", " + restaurant.location.display_address[1],
-                        imageURL: restaurant.image_url,
+                        imageURL: [restaurant.image_url],
                         yelpURL: restaurant.url
                     }
-
                     businessList.push(businessObj);
-                }  
+                }
 
                 // get favorites from back end database 
                 axios.get('/favorites') 
-                .then(({ data }) => {
-                    const favs = data;
+                    .then(({ data }) => {
+                        const favs = data;
+                        
+                        // filtering favs from business list
+                        const yelpIdArr = [];
+                        
+                        for(const fav of favs) {
+                            yelpIdArr.push(fav.yelpid);
+                        }
                     
-                    // filtering favs from business list
-                    const yelpIdArr = [];
-                    
-                    for(const fav of favs) {
-                        yelpIdArr.push(fav.yelpid);
-                    }
-                
-                    const filteredBusinessList = businessList.filter(businessObj => {
-                        return yelpIdArr.indexOf(businessObj.yelpid) === -1;
-                    });
+                        const filteredBusinessList = businessList.filter(businessObj => {
+                            return yelpIdArr.indexOf(businessObj.yelpid) === -1;
+                        });
 
-                    MAX_SIZE = filteredBusinessList.length;
-                    const currentIndex = getRandomNum(MAX_SIZE);
+                        MAX_SIZE = filteredBusinessList.length;
+                        const currentIndex = getRandomNum(MAX_SIZE);
 
-                    this.setState({
-                        businessList: filteredBusinessList,
-                        currentIndex,
-                        favs
-                    });
+                        this.setState({
+                            businessList: filteredBusinessList,
+                            currentIndex,
+                            favs
+                        });
 
-                    console.log('this.state.businessList: ', this.state.businessList);
-                    console.log('this.state.favs: ', this.state.favs);
-                })
-                .catch(err => console.error);
+                        console.log('this.state.businessList: ', this.state.businessList);
+                        console.log('this.state.favs: ', this.state.favs);
+                    })
+                    .catch(err => console.log(`App.componentDidMount: get favorites: Error: ${err}`));
             })
-            .catch(err => console.error);
-
+            .catch(err => console.log(`App.componentDidMount: get businesses from yelp: Error: ${err}`));
     }
 
     render() {
@@ -143,12 +156,12 @@ class App extends Component {
                 </div>
             )
         }
-    
+  
         return (
             <div>
                 <h1>Dinder</h1>
                 <Navbar showFavs={this.showFavs}/>
-                <MainContainer currentBusiness={this.state.businessList[this.state.currentIndex]} addFav={this.addFav} moveNext={this.moveNext} />
+                <MainContainer currentBusiness={this.state.businessList[this.state.currentIndex]} showMoreDetail={this.showMoreDetail} addFav={this.addFav} moveNext={this.moveNext} />
             </div>
         )
     }

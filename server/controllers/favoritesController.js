@@ -17,11 +17,11 @@ const getFavorites = (req, res, next) => {
 
 // add favorite
 const addFavorite = (req, res, next) => {
-  const { name, address, imageURL, id, yelpURL } = req.body;
+  const { name, address, imageURL, yelpid, yelpURL } = req.body;
 
   pool.query(
     'INSERT INTO favorites (name, address, imgurl, yelpid, yelpurl) VALUES ($1, $2, $3, $4, $5)',
-    [name, address, imageURL, id, yelpURL],
+    [name, address, imageURL, yelpid, yelpURL],
     error => {
       if (error) {
         res.json(error);

@@ -14,11 +14,11 @@ class App extends Component {
         businessList: [],
         currentIndex: 0,
         visited: {},
-        favs: []
+        favs: [],
+        fetchingDetails: false,
       };
 
       this.showFavs = this.showFavs.bind(this);
-      this.showMoreDetail = this.showMoreDetail.bind(this);
       this.addFav = this.addFav.bind(this);
       this.moveNext = this.moveNext.bind(this);
     }
@@ -26,19 +26,6 @@ class App extends Component {
     showFavs() {
         console.log('showFavs is clicked');
     } 
-
-    showMoreDetail(yelpid) {
-        // get current business detail from yelp api
-        axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/${yelpid}`, {
-            headers: {
-                Authorization: `Bearer ${key.API_KEY}`
-            }
-        }) 
-        .then((res) => {
-            console.log('IN SHOW MORE DETAIL DATA: ', res);
-        })
-        console.log('showMoreDetail is clicked');
-    }
 
     // function invokes when the heart button is clicked in MainContainer
     addFav() {
@@ -58,7 +45,8 @@ class App extends Component {
         this.setState({
             currentIndex,
             visited,
-            favs
+            favs,
+            fetchingDetails: false
         })
 
         // post new favorite which is current business to the database 
@@ -82,11 +70,9 @@ class App extends Component {
 
         this.setState({
             currentIndex,
-            visited
+            visited,
+            fetchingDetails: false
         })
-
-        console.log(this.state.currentIndex);
-        console.log(this.state.visited);
     }
 
     componentDidMount() {
@@ -156,12 +142,12 @@ class App extends Component {
                 </div>
             )
         }
-  
+
         return (
             <div>
                 <h1>Dinder</h1>
                 <Navbar showFavs={this.showFavs}/>
-                <MainContainer currentBusiness={this.state.businessList[this.state.currentIndex]} showMoreDetail={this.showMoreDetail} addFav={this.addFav} moveNext={this.moveNext} />
+                <MainContainer currentBusiness={this.state.businessList[this.state.currentIndex]} addFav={this.addFav} moveNext={this.moveNext} />
             </div>
         )
     }

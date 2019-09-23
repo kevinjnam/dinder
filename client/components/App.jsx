@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import { Button, Col, Container, Modal, ModalHeader, ModalBody, Row } from 'reactstrap';
-import Header from './Header.jsx';
-=======
-import Navbar from './Navbar.jsx';
->>>>>>> 5adfe27a51679383040a56ab4823631471b6d157
+import Sidebar from './Sidebar.jsx';
 import MainContainer from './MainContainer.jsx';
 import axios from 'axios';
 import key from '../../config/keys';
 
-const locationSearched = '1600 Main St 1st floor, Venice, CA 90291';
+const LOCATION_SEARCHED = '1600 Main St 1st floor, Venice, CA 90291';
+let MAX_SIZE = 0;
 
 class App extends Component {
     constructor(){
@@ -17,109 +13,171 @@ class App extends Component {
       this.state = {
         businessList: [],
         currentIndex: 0,
-        favs: [{ name: 'Darren', address: '123 St.'}],
-        collapsed: true
+        visited: {},
+        favs: [],
+        fetchingDetails: false,
+        isSidebarOpen: false
       };
 
-      this.showFavs = this.showFavs.bind(this);
+      this.toggleSidebar = this.toggleSidebar.bind(this);
       this.addFav = this.addFav.bind(this);
+      this.deleteFav = this.deleteFav.bind(this); 
       this.moveNext = this.moveNext.bind(this);
-      this.toggleHeader = this.toggleHeader.bind(this);
     }
 
-    showFavs() {
-        console.log('showFavs is clicked');
-    } 
-
-    addFav() {
-        let tempArr = [...this.state.favs];
-        tempArr.push(this.state.businessList[this.state.currentIndex])
+    // function invokes when the show Favs button is clicked in Sidebar
+    toggleSidebar() {
         this.setState({
-            currentIndex: this.state.currentIndex + 1,
-            favs: tempArr
-        })
-    }
-
-    moveNext() {
-        this.setState({currentIndex: this.state.currentIndex + 1})
-        console.log('moveNext is clicked');
-    }
-
-    toggleHeader() {
-        this.setState({
-            collapsed: !this.state.collapsed
+            isSidebarOpen: !this.state.isSidebarOpen
         });
     }
 
+    // function invokes when the heart button is clicked in MainContainer
+    addFav() {
+        let favs = this.state.favs.slice();
+        let visited = Object.assign(this.state.visited);
+
+        favs.push(this.state.businessList[this.state.currentIndex]);
+        visited[this.state.currentIndex] = true;
+        
+        let currentIndex = getRandomNum(MAX_SIZE);
+
+        // if currentIndex is already stored in visited, get another one
+        while(visited[currentIndex]) {
+            currentIndex = getRandomNum(MAX_SIZE);
+        }
+
+        this.setState({
+            currentIndex,
+            visited,
+            favs,
+            fetchingDetails: false
+        })
+
+        // post new favorite which is current business to the database 
+        axios.post('/favorites', this.state.businessList[this.state.currentIndex])
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => console.error);
+    }
+
+    // function invokes when '??' button is clicked in Sidebar 
+    deleteFav(id) {   
+        axios.delete('/favorites', {
+            data: { _id: id }
+        })
+        .then(res => {
+            const updateFavs = this.state.favs.filter(fav => fav._id !== id)
+            this.setState({ favs: updateFavs })
+        })
+        .catch(err => console.error); 
+    }
+
+    // function invokes when the next button is clicked in MainContainer
+    moveNext() {
+        let visited = Object.assign(this.state.visited);
+        visited[this.state.currentIndex] = true;
+        
+        let currentIndex = getRandomNum(MAX_SIZE);
+        // if currentIndex is already visited get another one
+        while(visited[currentIndex]) {
+            currentIndex = getRandomNum(MAX_SIZE);
+        }
+
+        this.setState({
+            currentIndex,
+            visited,
+            fetchingDetails: false
+        })
+    }
+
     componentDidMount() {
-        // get data from location searched using Yelp API
-        axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}`, {
+        // get data from yelp business endpoint
+        axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${LOCATION_SEARCHED}`, {
             headers: {
                 Authorization: `Bearer ${key.API_KEY}`
             },
             params: {
-                categories: 'dinner'
+                categories: 'restaurants, All',
+                limit: 50
             }
         }) 
-        .then((res) => {
-            let businessArr = [];
-            for (let restaurant of res.data.businesses) {
-                const businessObj = {
-                    name: restaurant.name,
-                    address: restaurant.location.display_address[0] + ", " + restaurant.location.display_address[1],
-                    imageURL: restaurant.image_url
+            .then((res) => { 
+                // create state businessList with necessary infos           
+                let businessList = [];
+                for (let restaurant of res.data.businesses) {
+                    const businessObj = {
+                        yelpid: restaurant.id,
+                        name: restaurant.name,
+                        address: restaurant.location.display_address[0] + ", " + restaurant.location.display_address[1],
+                        imageURL: [restaurant.image_url],
+                        yelpURL: restaurant.url
+                    }
+                    businessList.push(businessObj);
                 }
-                businessArr.push(businessObj);
-            }  
-            this.setState({
-                businessList: businessArr,
-            });
-        })
-        .catch(err => console.error);
 
-        // query data from db
-        // axios.get('/favorites')
-        // .then((favs => {
-        //     this.setState({favs})
-        // }))
-        // .catch(err => console.log(err))
-        console.log(this.state.favs)
+                // get favorites from back end database 
+                axios.get('/favorites') 
+                    .then(({ data }) => {
+                        const favs = data;
+                        
+                        // filtering favs from business list
+                        const yelpIdArr = [];
+                        
+                        for(const fav of favs) {
+                            yelpIdArr.push(fav.yelpid);
+                        }
+                    
+                        const filteredBusinessList = businessList.filter(businessObj => {
+                            return yelpIdArr.indexOf(businessObj.yelpid) === -1;
+                        });
+
+                        MAX_SIZE = filteredBusinessList.length;
+                        const currentIndex = getRandomNum(MAX_SIZE);
+
+                        this.setState({
+                            businessList: filteredBusinessList,
+                            currentIndex,
+                            favs
+                        });
+                        console.log('this.state.businessList: ', this.state.businessList);
+                        console.log('this.state.favs: ', this.state.favs);
+                    })
+                    .catch(err => console.log(`App.componentDidMount: get favorites: Error: ${err}`));
+            })
+            .catch(err => console.log(`App.componentDidMount: get businesses from yelp: Error: ${err}`));
     }
 
     render() {
 
         if (this.state.businessList.length === 0) {
             return (
-                <Container>
-                    <Row>
-                        <h1 style={{ textAlign: 'center' }}>Loading...</h1>
-                    </Row>
-                </Container>
-                
+                <h1 style={{ textAlign: 'center' }}>Loading...</h1> 
             )
         } 
 
-        if (this.state.collapsed === false) {
-            return (
-
-                
-                <p>{this.state.favs}</p>
-            )
-        }
-
         return (
-        <div>
-            <Container>
-                
-                <Header showFavs={this.showFavs} toggleHeader={this.toggleHeader} isOpen={!this.state.collapsed} />
-                <Row>
-                    <MainContainer currentBusiness={this.state.businessList[this.state.currentIndex]} addFav={this.addFav} moveNext={this.moveNext} />
-                </Row>
-            </Container>
+        <div>   
+            <Sidebar 
+                favs={this.state.favs} 
+                isSidebarOpen={this.state.isSidebarOpen}
+                toggleSidebar={this.toggleSidebar}
+                deleteFav={this.deleteFav}
+            />
+            <MainContainer 
+                currentBusiness={this.state.businessList[this.state.currentIndex]} 
+                addFav={this.addFav} 
+                moveNext={this.moveNext} 
+            />
         </div>
         )
     }
 
+}
+
+function getRandomNum(max) {
+    return Math.floor(Math.random() * max);
 }
 
 export default App;

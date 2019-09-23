@@ -4,7 +4,7 @@ import MainContainer from './MainContainer.jsx';
 import axios from 'axios';
 import key from '../../config/keys';
 
-const locationSearched = 'losangeles';
+const locationSearched = '1600 Main St 1st floor, Venice, CA 90291';
 
 class App extends Component {
     constructor(){

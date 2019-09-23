@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { Button, Col, Container, Modal, ModalHeader, ModalBody, Row } from 'reactstrap';
 import Header from './Header.jsx';
+=======
+import Navbar from './Navbar.jsx';
+>>>>>>> 5adfe27a51679383040a56ab4823631471b6d157
 import MainContainer from './MainContainer.jsx';
 import axios from 'axios';
 import key from '../../config/keys';

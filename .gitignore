@@ -17,3 +17,5 @@ dist/
 
 # jest coverage
 coverage/
+
+keys.js

@@ -8,6 +8,8 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 
+app.use('/assets', express.static(path.join(__dirname, '../client/assets')));
+
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
 // route to home page

@@ -4,7 +4,7 @@ import MainContainer from './MainContainer.jsx';
 import axios from 'axios';
 import key from '../../config/keys';
 
-const locationSearched = 'losangeles';
+const locationSearched = '1600 main st venice ca 92901';
 
 class App extends Component {
     constructor(){
@@ -13,7 +13,8 @@ class App extends Component {
         businessList: [],
         currentIndex: 0,
         favs: [],
-        currentBusiness: {}
+        currentBusiness: {},
+        fetchIndex: 0
       };
 
       this.showFavs = this.showFavs.bind(this);
@@ -32,7 +33,7 @@ class App extends Component {
     }
 
     moveNext() {
-        this.setState({currentIndex: this.state.currentIndex + 1})
+        this.setState({currentIndex: this.state.currentIndex + 1, fetchIndex: this.state.fetchIndex + 1})
         console.log('moveNext is clicked');
     }
 
@@ -79,7 +80,7 @@ class App extends Component {
     componentDidUpdate(prevProps, prevState){
         console.log( "ps", prevState)
         if(this.state.currentIndex === this.state.businessList.length - 4 ){
-            axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}&offset=${this.state.currentIndex}`, {
+            axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}&offset=${this.state.fetchIndex}`, {
                 headers: {
                     Authorization: `Bearer ${key.API_KEY}`
                 }
@@ -106,8 +107,10 @@ class App extends Component {
                 console.log("new stateArr", businessArr.concat(prevState.businessList))
 
                 this.setState({
-                    businessList: businessArr.concat(prevState.businessList)
+                    businessList: businessArr.concat(prevState.businessList).splice(0,this.state.currentIndex),
+                    currentIndex: 0
                 });
+
 
                 console.log("updated listInState", this.state.businessList);
 

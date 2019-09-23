@@ -4,7 +4,7 @@ import MainContainer from './MainContainer.jsx';
 import axios from 'axios';
 import key from '../../config/keys';
 
-const locationSearched = '1600 Main St 1st floor, Venice, CA 90291';
+const locationSearched = 'losangeles';
 
 class App extends Component {
     constructor(){
@@ -48,7 +48,7 @@ class App extends Component {
         })
         .then((res) => {
 
-            console.log(res.data.businesses);
+            console.log("res",res.data.businesses);
 
             let businessArr = [];
 
@@ -68,12 +68,53 @@ class App extends Component {
                 businessList: businessArr,
             });
 
-            console.log(this.state.businessList);
+            console.log("listInState", this.state.businessList);
 
         })
 
         .catch(err => console.error);
 
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        console.log( "ps", prevState)
+        if(this.state.currentIndex === this.state.businessList.length - 4 ){
+            axios.get(`${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search?location=${locationSearched}&offset=${this.state.currentIndex}`, {
+                headers: {
+                    Authorization: `Bearer ${key.API_KEY}`
+                }
+            })
+            .then((res) => {
+
+                console.log("next res",res.data.businesses);
+                console.log("index", this.state.currentIndex)
+
+                let businessArr = [];
+
+                for (let restaurant of res.data.businesses) {
+                    const businessObj = {
+                        id: restaurant.id,
+                        name: restaurant.name,
+                        address: restaurant.location.display_address[0] + ", " + restaurant.location.display_address[1],
+                        imageURL: restaurant.image_url,
+                        yelpURL: restaurant.url
+                    }
+
+                    businessArr.push(businessObj);
+                }
+                console.log("new bizArr", businessArr)
+                console.log("new stateArr", businessArr.concat(prevState.businessList))
+
+                this.setState({
+                    businessList: businessArr.concat(prevState.businessList)
+                });
+
+                console.log("updated listInState", this.state.businessList);
+
+            })
+
+            .catch(err => console.error);
+        }
     }
 
     render() {
@@ -89,7 +130,10 @@ class App extends Component {
             <div>
                 <h1>Dinder</h1>
                 <Navbar showFavs={this.showFavs}/>
-                <MainContainer currentBusiness={this.state.businessList[this.state.currentIndex]} addFav={this.addFav} moveNext={this.moveNext} />
+                <MainContainer
+                    currentBusiness={this.state.businessList[this.state.currentIndex % 20]}
+                    addFav={this.addFav} moveNext={this.moveNext}
+                />
             </div>
         )
     }

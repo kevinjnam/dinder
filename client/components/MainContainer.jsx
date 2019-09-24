@@ -88,7 +88,7 @@ class MainContainer extends Component {
                   this.resetState();
                 }}
               >
-                <i class='fa fa-heart'></i>
+                <i className='fa fa-heart'></i>
               </button>
               <button
                 className='next'
@@ -97,14 +97,14 @@ class MainContainer extends Component {
                   this.resetState();
                 }}
               >
-                <i class='fa fa-times'></i>
+                <i className='fa fa-times'></i>
               </button>
               <a
                 className='yelp'
-                href={currentBusiness.yelpURL}
+                href={currentBusiness.yelpurl}
                 target='_blank'
               >
-                <i class='fa fa-info'></i>
+                <i className='fa fa-info'></i>
               </a>
             </div>
           </div>
@@ -118,7 +118,7 @@ class MainContainer extends Component {
         <div className='modal'>
           <img
             className='img-main'
-            src={currentBusiness.imageURL}
+            src={currentBusiness.imgurl}
             onClick={() => this.showMoreDetail()}
           />
           <div className='button-group'>
@@ -128,7 +128,7 @@ class MainContainer extends Component {
                 addFav();
               }}
             >
-              <i class='fa fa-heart'></i>
+              <i className='fa fa-heart'></i>
             </button>
             <button
               className='next'
@@ -136,7 +136,7 @@ class MainContainer extends Component {
                 moveNext();
               }}
             >
-              <i class='fa fa-times'></i>
+              <i className='fa fa-times'></i>
             </button>
           </div>
         </div>

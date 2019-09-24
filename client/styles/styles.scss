@@ -19,7 +19,10 @@ body {
 }
 
 h1 {
+  width: 100%;
+  text-align: center;
   margin: 0;
+  position: absolute;
 }
 
 h3 {
@@ -41,28 +44,74 @@ a {
   text-decoration: none;
 }
 
+img {
+  object-fit: cover;
+}
+
+// logo
+.image-frame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  background: navy;
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.logo {
+  height: 50px;
+}
+
+// login
+#login {
+  .login-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .image-frame {
+    margin-right: 10px;
+  }
+
+  h1 {
+    position: static;
+  }
+
+  form {
+    > div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+  }
+
+  label {
+    margin-right: 10px;
+  }
+}
+
 // header
 nav {
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 80px;
   box-shadow: 0 0 40px #000;
+  padding: 0 10px;
   position: relative;
 
-  .image-frame {
+  .nav-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 40px;
-    background: navy;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-  }
-
-  img {
-    height: 40px;
+    width: 1024px;
+    margin: auto;
+    position: relative;
   }
 }
 
@@ -118,7 +167,6 @@ main {
 .img-main {
   width: 500px;
   height: 500px;
-  object-fit: cover;
   border-radius: 20px;
   margin: 0 0 40px 0;
   position: relative;
@@ -130,6 +178,7 @@ main {
     width: 300px;
     height: 300px;
     margin: 0 10px 40px;
+    border-radius: 20px;
   }
 }
 
@@ -161,7 +210,8 @@ button,
 }
 
 .history,
-.back {
+.back,
+.sign-in {
   background: linear-gradient(45deg, navy, skyblue);
   box-shadow: 0 6px navy;
 
@@ -175,11 +225,16 @@ button,
 }
 
 .history {
+  margin: 0;
   top: -2px;
 
   &:hover {
     top: 0;
   }
+}
+
+.sign-in {
+  margin: auto;
 }
 
 .fav {
@@ -224,16 +279,22 @@ button,
 
 // popup
 .popup {
+  max-height: 80%;
+  overflow: auto;
   background: #fff;
-  padding: 40px;
+  box-shadow: 0 0 40px #000;
+  padding: 5px 20px 20px 30px;
+  border-radius: 0 0 20px 20px;
   position: absolute;
-  right: 0;
+  top: 0;
+  right: calc((100% - 1024px) / 2);
   z-index: 2;
 
   .popup-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
   }
 
   ul {
@@ -250,8 +311,46 @@ button,
   }
 
   img {
+    flex: 0 0 auto;
     width: 100px;
     height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
     margin: 0;
+  }
+
+  .fav-details {
+    width: 100%;
+    padding: 10px;
+  }
+
+  button {
+    flex: 0 0 auto;
+  }
+}
+
+// dance
+.dance .modal {
+  animation: dance 0.8s infinite alternate ease-in-out;
+}
+
+@keyframes dance {
+  from,
+  49% {
+    transform-origin: -50% 100%;
+  }
+  50%,
+  75%,
+  to {
+    transform-origin: 150% 100%;
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(10deg);
   }
 }

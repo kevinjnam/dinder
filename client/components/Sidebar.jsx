@@ -6,18 +6,28 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { isSidebarOpen, deleteFav, favs, toggleSidebar } = this.props;
+    const {
+      isSidebarOpen,
+      deleteFav,
+      favs,
+      toggleSidebar,
+      dance,
+      secret,
+      pressPlay
+    } = this.props;
 
-    const favsList = favs.map(fav => {
+    let playSecret = dance ? 'dance' : '';
+
+    const favsList = favs.map((fav, idx) => {
       return (
-        <li key={fav._id}>
+        <li key={idx}>
           <img src={fav.imgurl} />
           <div className='fav-details'>
             <p>{fav.name}</p>
             <p>{fav.address}</p>
           </div>
-          <button className='next' onClick={() => deleteFav(fav._id)}>
-            <i class='fa fa-times'></i>
+          <button className='next' onClick={() => deleteFav(fav.yelpid)}>
+            <i className='fa fa-times'></i>
           </button>
         </li>
       );
@@ -26,14 +36,39 @@ class Sidebar extends Component {
     // when sidebar is open, show favs list
     if (isSidebarOpen) {
       return (
-        <div className='popup'>
-          <div className='popup-header'>
-            <h3>Favorited restaurants:</h3>
-            <button className='back' onClick={() => toggleSidebar()}>
-              <i class='fa fa-arrow-left'></i>
-            </button>
+        <div>
+          <nav>
+            <div className='nav-container'>
+              <div
+                className='image-frame'
+                onClick={() => {
+                  secret();
+                  pressPlay();
+                }}
+              >
+                <img className='logo' src={'../assets/logo.png'} />
+              </div>
+              <h1>Dinder</h1>
+              <button
+                className='history'
+                onClick={() => {
+                  toggleSidebar();
+                  favs;
+                }}
+              >
+                <i className='fa fa-history'></i>
+              </button>
+            </div>
+          </nav>
+          <div className='popup'>
+            <div className='popup-header'>
+              <h2>Favorites:</h2>
+              <button className='back' onClick={() => toggleSidebar()}>
+                <i className='fa fa-arrow-left'></i>
+              </button>
+            </div>
+            <ul>{favsList}</ul>
           </div>
-          <ul>{favsList}</ul>
         </div>
       );
     }
@@ -41,19 +76,27 @@ class Sidebar extends Component {
     // when sidebar is collapsed, only show the Show Favs button
     return (
       <nav>
-        <div className='image-frame'>
-          <img className='logo' src={'../assets/logo.png'} />
+        <div className='nav-container'>
+          <div
+            className='image-frame'
+            onClick={() => {
+              secret();
+              pressPlay();
+            }}
+          >
+            <img className='logo' src={'../assets/logo.png'} />
+          </div>
+          <h1>Dinder</h1>
+          <button
+            className='history'
+            onClick={() => {
+              toggleSidebar();
+              favs;
+            }}
+          >
+            <i className='fa fa-history'></i>
+          </button>
         </div>
-        <h1>Dinder</h1>
-        <button
-          className='history'
-          onClick={() => {
-            toggleSidebar();
-            favs;
-          }}
-        >
-          <i class='fa fa-history'></i>
-        </button>
       </nav>
     );
   }

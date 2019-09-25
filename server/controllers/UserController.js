@@ -21,7 +21,7 @@ const verifyUser = (req, res, next) => {
 
 const createUser = (req, res, next) => {
 	let arr = [req.body.user, req.body.password];
-	let queryForSignup = `INSERT INTO "users" ("user","password") VALUES ($1,$2)`;
+	let queryForSignup = `INSERT INTO "Users" ("user","password") VALUES ($1,$2)`;
 	pool.query(queryForSignUp, arr, (err, result) => {
 		if (err) console.log("QUERY NOT FOUND");
 		return next();

@@ -19,6 +19,7 @@ class App extends Component {
       isSidebarOpen: false,
       currentUser: '',
       verified: false,
+      created: false,
       rerender: false,
       dance: false,
       play: false
@@ -38,6 +39,12 @@ class App extends Component {
 
   // function invokes when the show Favs button is clicked in Sidebar
   //login functions
+
+  create(e) {
+    
+  }
+
+
   verify(e) {
     e.preventDefault();
     const user = e.target.username.value;

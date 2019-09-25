@@ -22,8 +22,9 @@ app.get('/signedin', sessionController.isLoggedIn, (req, res)=> {
   }
 })
 
-app.get('/signout', sessionController.signOut, (req, res)=> {
-  if(res.locals.signedOut === "signedOut") {
+app.use('/signout', sessionController.signOut, (req, res)=> {
+  if (res.locals.signedOut === "signedOut") {
+    console.log('returngin from sign out', res.locals)
     res.status(200).send('signedOut');
   }
 });

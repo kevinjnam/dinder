@@ -53,7 +53,7 @@ class App extends Component {
 
   signout() {
     axios
-      .get('/signout', {user: this.state.currentUser})
+      .post('/signout', {user: this.state.currentUser})
       .then(res => {
         console.log(res)
         if(res.data === 'signedOut') {
@@ -363,7 +363,7 @@ class App extends Component {
           handleOptionChange={this.handleOptionChange}
           price={this.state.price}
           businessList={this.state.businessList}
-          signout={this.state.signout}
+          signout={this.signout}
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}

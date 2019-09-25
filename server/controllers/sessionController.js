@@ -9,13 +9,19 @@ const pool = new Pool({
 const sessionController = {};
 
 sessionController.isLoggedIn = (req, res, next) => {
-  const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
-  pool.query(queryForCookie, (err, result)=> {
-    if (err) return next(err);
-    res.locals= result.rows[0];
-    res.locals.verified = 'verified';
+  console.log(req.headers.cookie)
+  if (req.headers.cookie !== undefined) {
+    const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
+    pool.query(queryForCookie, (err, result)=> {
+      if (err) return next(err);
+      if (result !== undefined) {
+      res.locals = result.rows[0];
+      res.locals.verified = 'verified';
+      return next();
+     }
+    })
     return next();
-  })
+  }
 }
 
 sessionController.startSession = (req, res, next) => {
@@ -29,6 +35,7 @@ sessionController.startSession = (req, res, next) => {
 };
 
 sessionController.signOut = (req, res, next) => {
+  console.log('in sign out controller', req.body)
   const queryForCookie = `DELETE FROM sessions WHERE "user" = '${req.body.user}'`
   pool.query(queryForCookie, (err, result) => {
     if (err) return next(err);

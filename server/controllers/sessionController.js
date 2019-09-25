@@ -12,8 +12,11 @@ sessionController.isLoggedIn = (req, res, next) => {
   const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
   pool.query(queryForCookie, (err, result)=> {
     if (err) return next(err);
+  
     res.locals= result.rows[0];
+    console.log('res.locals after setting rows', res.locals);
     res.locals.verified = 'verified';
+    console.log('here this breaks')
     return next();
   })
 }
@@ -29,6 +32,7 @@ sessionController.startSession = (req, res, next) => {
 };
 
 sessionController.signOut = (req, res, next) => {
+  console.log('hit 1')
   const queryForCookie = `DELETE FROM sessions WHERE "user" = '${req.body.user}'`
   pool.query(queryForCookie, (err, result) => {
     if (err) return next(err);

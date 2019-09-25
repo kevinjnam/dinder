@@ -23,6 +23,7 @@ app.get('/signedin', sessionController.isLoggedIn, (req, res)=> {
 })
 
 app.get('/signout', sessionController.signOut, (req, res)=> {
+  console.log('hit 2')
   if(res.locals.signedOut === "signedOut") {
     res.status(200).send('signedOut');
   }

@@ -363,7 +363,7 @@ class App extends Component {
           handleOptionChange={this.handleOptionChange}
           price={this.state.price}
           businessList={this.state.businessList}
-          signout={this.state.signout}
+          signout={this.signout}
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}

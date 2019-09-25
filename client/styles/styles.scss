@@ -115,6 +115,18 @@ nav {
   }
 }
 
+.navBar-buttons {
+  display: flex;
+}
+.signout {
+  background: linear-gradient(45deg, rgb(146, 5, 5), rgb(238, 154, 115));
+  color: white;
+  font-size: 20px;
+  height: 60px;
+  width: 50px;
+}
+
+
 .center-header {
   display: flex;
   align-items: center;

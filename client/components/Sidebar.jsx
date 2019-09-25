@@ -15,7 +15,8 @@ class Sidebar extends Component {
       secret,
       pressPlay,
       submitChoices,
-      handleOptionChange
+      handleOptionChange,
+      signout
     } = this.props;
     let playSecret = dance ? 'dance' : '';
     const favsList = favs.map((fav, idx) => {
@@ -103,17 +104,26 @@ class Sidebar extends Component {
             </select>
             <button type="submit" id="selectChoiceButton" name="selectChoiceButton">
               <i className="fa fa-search" />
-              </button>
+            </button>
            </form>
-          <button
-            className='history'
-            onClick={() => {
-              toggleSidebar();
-              favs;
-            }}
-          >
-            <i className='fa fa-history'></i>
-          </button>
+           <div className="navBar-buttons">
+            <button
+              className='history'
+              onClick={() => {
+                toggleSidebar();
+                favs;
+              }}
+            >
+              <i className='fa fa-history'></i>
+            </button>
+            <button
+              className='signout button'
+              onClick={() => {
+                signout()
+              }} >
+              <i className="fas fa-sign-out-alt"></i>
+            </button>
+           </div>
         </div>
       </nav>
     );

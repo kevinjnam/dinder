@@ -53,7 +53,7 @@ class App extends Component {
 
   signout() {
     axios
-      .get('/signout', {user: this.state.currentUser})
+      .post('/signout', {user: this.state.currentUser})
       .then(res => {
         console.log(res)
         if(res.data === 'signedOut') {

@@ -26,8 +26,8 @@ class Sidebar extends Component {
           <div className='fav-details'>
             <h4>{fav.name}</h4>
             <p>{fav.address}</p>
-            <p>Phone: {fav.phone}</p>
-            <p>Rating: {fav.rating} <span><i className="fa fa-star" aria-hidden="true"></i>
+            <p><span>Phone: </span>{fav.phone}</p>
+            <p><span>Rating: </span>{fav.rating} <span><i className="fa fa-star" aria-hidden="true"></i>
             </span></p>
           </div>
           <button className='next' onClick={() => deleteFav(fav.yelpid)}>

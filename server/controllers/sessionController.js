@@ -13,7 +13,7 @@ sessionController.isLoggedIn = (req, res, next) => {
   if (req.headers.cookie !== undefined) {
     const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
     pool.query(queryForCookie, (err, result)=> {
-      if (err) return next(err);
+      // if (err) return next(err);
       if (result !== undefined) {
       res.locals.cookie = result.rows[0];
       res.locals.verified = 'verified';

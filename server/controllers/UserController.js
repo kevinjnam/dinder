@@ -10,13 +10,12 @@ const pool = new Pool({
 
 
 const verifyUser = (req, res, next) => {
+  console.log('verifying');
 	let arr = [req.body.user];
 	let queryforPass = `SELECT "password" FROM "Users" WHERE "user" = $1`;
 	pool.query(queryforPass, arr, (err, result) => {
 		if (err) console.log("no result for user found");
-		// console.log(result.rows[0].password);
 		if (result.rows[0].password === req.body.pass) {
-			// console.log("pass");
 			return next();
 		}
 		return res.send("Not Verified");
@@ -24,8 +23,7 @@ const verifyUser = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  console.log('create user')
-	let arr = [req.body.user, req.body.password];
+	let arr = [req.body.user, req.body.pass];
 	let queryForSignUp = `INSERT INTO "Users" ("user","password") VALUES ($1,$2)`;
 	pool.query(queryForSignUp, arr, (err, result) => {
 		if (err) console.log("QUERY NOT FOUND");
@@ -35,5 +33,5 @@ const createUser = (req, res, next) => {
 
 module.exports = {
 	verifyUser,
-	createUser
+  createUser
 };

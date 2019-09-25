@@ -5,6 +5,8 @@ import axios from 'axios';
 import key from '../../config/keys';
 import Login from './Loginpage.jsx';
 import Signup from './SignupPage.jsx';
+import MapDisplay from './MapDisplay.jsx';
+import ReactMapGL from 'react-map-gl';
 
 const LOCATION_SEARCHED = '1600 Main St 1st floor, Venice, CA 90291';
 let MAX_SIZE = 0;
@@ -24,7 +26,9 @@ class App extends Component {
       signup: false,
       rerender: false,
       dance: false,
-      play: false
+      play: false,
+      price: '$',
+      mapView: false
     };
 
     this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -36,7 +40,8 @@ class App extends Component {
     this.pressPlay = this.pressPlay.bind(this);
     this.create = this.create.bind(this);
     this.signup = this.signup.bind(this);
-    this.yelpAuth = this.yelpAuth.bind(this);
+    this.submitChoices = this.submitChoices.bind(this);
+    this.handleOptionChange = this.handleOptionChange.bind(this);
     this.audio = new Audio(
       'https://iringtone.net/rington/file?id=8454&type=sound&name=mp3'
     );
@@ -55,6 +60,7 @@ class App extends Component {
     axios
       .post('/signup/create', { user: user, pass: pass })
       .then(res => { 
+        console.log(res);
         if(res.data === 'user Created') {
           this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
         }
@@ -63,10 +69,28 @@ class App extends Component {
   }
 
 
+  submitChoices(e) {
+    e.preventDefault();
+    const location = e.target.location.value;
+    const cuisine = e.target.cuisine.value;
+    const price = this.state.price;
+    console.log(location)
+    console.log(cuisine)
+    console.log(price, '<---- price');
+  }
+
+  handleOptionChange(e) {
+    this.setState({price: e.target.value});
+  }
+
+
+  //login functions
   verify(e) {
     e.preventDefault();
     const user = e.target.username.value;
     const pass = e.target.password.value;
+
+    console.log('data to login')
 
     axios
       .post('/login', { user: user, pass: pass })
@@ -86,6 +110,9 @@ class App extends Component {
 
   // function invokes when the heart button is clicked in MainContainer
   addFav() {
+    console.log(this.state.businessList, '<--- businessList')
+    console.log(this.state.visited, '<--- visited')
+    
     let favs = this.state.favs.slice();
     let visited = Object.assign(this.state.visited);
 
@@ -160,7 +187,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.rerender === true) {
+    if (this.state.rerender) {
       // get data from yelp business endpoint
       axios
         .get(
@@ -179,6 +206,7 @@ class App extends Component {
           // create state businessList with necessary infos
           let businessList = [];
           for (let restaurant of res.data.businesses) {
+            console.log(restaurant)
             const businessObj = {
               yelpid: restaurant.id,
               name: restaurant.name,
@@ -187,17 +215,19 @@ class App extends Component {
                 ', ' +
                 restaurant.location.display_address[1],
               imgurl: restaurant.image_url,
-              yelpurl: restaurant.url
+              yelpurl: restaurant.url,
+              rating: restaurant.rating,
+              phone: restaurant.phone,
+              coordinates: restaurant.coordinates
             };
             businessList.push(businessObj);
           }
-
+          // console.log('business list in fucking app.kjsx', businessList[0]);
           // get favorites from back end database
           axios
             .post('/favorites/fav', { user: this.state.currentUser })
             .then(({ data }) => {
               const favs = data;
-
               // filtering favs from business list
               const yelpIdArr = [];
 
@@ -234,6 +264,8 @@ class App extends Component {
   }
 
   render() {
+    
+    
     if (this.state.signup === true) {
       return (
         <main>
@@ -257,12 +289,22 @@ class App extends Component {
         </main>
       );
     }
+    
+    if (this.state.mapView === true) {
+      return (
+        <MapDisplay 
+        mapView={this.state.mapView} />
+        )
+      }
+
+
 
     let dance = this.state.dance ? 'dance' : '';
 
     return (
       <div className={`container ${dance}`}>
         <Sidebar
+          submitChoices={this.submitChoices}
           favs={this.state.favs}
           isSidebarOpen={this.state.isSidebarOpen}
           toggleSidebar={this.toggleSidebar}
@@ -270,6 +312,9 @@ class App extends Component {
           dance={this.state.dance}
           secret={this.secret}
           pressPlay={this.pressPlay}
+          handleOptionChange={this.handleOptionChange}
+          price={this.state.price}
+          businessList={this.state.businessList}
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}

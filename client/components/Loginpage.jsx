@@ -18,12 +18,11 @@ const Login = ({ verification, signup, yelpAuth }) => {
           <label for='password'>Password:</label>
           <input type='password' name='password' id='password' required={true} />
         </div>
-        <button className='sign-in' name=' button' id='button' type='submit'>
+        <button className='sign-in' name='button' id='button' type='submit'>
           <i className='fa fa-sign-in-alt'></i>
         </button>
       </form>
       <button className='sign-up' onClick={() => signup()}>Need an account?<br/>Sign up here...</button>
-      <button className='yelp-sign-in' onClick={() => yelpAuth()}>Sign in with Yelp</button>
 
     </div>
   );

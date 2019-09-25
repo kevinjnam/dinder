@@ -13,18 +13,21 @@ class Sidebar extends Component {
       toggleSidebar,
       dance,
       secret,
-      pressPlay
+      pressPlay,
+      submitChoices,
+      handleOptionChange
     } = this.props;
-
     let playSecret = dance ? 'dance' : '';
-
     const favsList = favs.map((fav, idx) => {
       return (
         <li key={idx}>
           <img src={fav.imgurl} />
           <div className='fav-details'>
-            <p>{fav.name}</p>
+            <h4>{fav.name}</h4>
             <p>{fav.address}</p>
+            <p>Phone: {fav.phone}</p>
+            <p>Rating: {fav.rating} <span><i className="fa fa-star" aria-hidden="true"></i>
+            </span></p>
           </div>
           <button className='next' onClick={() => deleteFav(fav.yelpid)}>
             <i className='fa fa-times'></i>
@@ -48,7 +51,6 @@ class Sidebar extends Component {
               >
                 <img className='logo' src={'../assets/logo.png'} />
               </div>
-              <h1>Dinder</h1>
               <button
                 className='history'
                 onClick={() => {
@@ -85,8 +87,22 @@ class Sidebar extends Component {
             }}
           >
             <img className='logo' src={'../assets/logo.png'} />
-          </div>
-          <h1>Dinder</h1>
+          </div>      
+           <form className="center-header" onSubmit={submitChoices}>
+            <input text="text" id='location' name="location" placeholder="City or Zip Code..." />
+            <input text="text" id='cuisine' name="cuisine" placeholder="Choose Your Cuisine..." />
+            <select className="priceSelector" onChange={(e)=>{
+              handleOptionChange(e);
+            }}>
+              <option value="$">$</option>
+              <option value="$$">$$</option>
+              <option value="$$$">$$$</option>
+              <option value="$$$$">$$$$</option>
+            </select>
+            <button type="submit" id="selectChoiceButton" name="selectChoiceButton">
+              <i className="fa fa-search" />
+              </button>
+           </form>
           <button
             className='history'
             onClick={() => {

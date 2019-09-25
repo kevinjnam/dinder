@@ -18,7 +18,7 @@ const Login = ({ verification, signup }) => {
           <label for='password'>Password:</label>
           <input type='password' name='password' id='password' required={true} />
         </div>
-        <button className='sign-in' name=' button' id='button' type='submit'>
+        <button className='sign-in' name='button' id='button' type='submit'>
           <i className='fa fa-sign-in-alt'></i>
         </button>
       </form>

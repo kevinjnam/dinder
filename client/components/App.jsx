@@ -78,22 +78,6 @@ class App extends Component {
       .catch(err => console.error);
   }
 
-  // yelpAuth() {
-  //   // const yelpLoginApiKey = 'MxW3xR7Rer69HBj6a9X8rHTC475CWQbIkykfByj6GMgQ-yQHplZfERxvXoClZomtIZsRkgXwDGeCq99FYeMTyeDM3ZQ1fBX-gNw15z1hr3Oc5xGdNs0XkuaofrmKXXYx'
-  //   fetch('/yelpLogin', {
-  //     // method: 'GET',
-  //     // mode: 'cors',
-  //     // headers: {
-  //     //   'Content-Type': 'application/json',
-  //     //   'Authorization': 'Bearer ' + 'MxW3xR7Rer69HBj6a9X8rHTC475CWQbIkykfByj6GMgQ-yQHplZfERxvXoClZomtIZsRkgXwDGeCq99FYeMTyeDM3ZQ1fBX-gNw15z1hr3Oc5xGdNs0XkuaofrmKXXYx',
-  //     //   'Access-Control-Allow-Origin': '*'
-  //     // }
-  //   })
-  //   // .then(res => {
-  //   //   console.log(res);
-  //   // })
-  // }
-
   toggleSidebar() {
     this.setState({
       isSidebarOpen: !this.state.isSidebarOpen

@@ -13,12 +13,27 @@ app.use('/assets', express.static(path.join(__dirname, '../client/assets')));
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
+<<<<<<< HEAD
 // route to home page
 app.get('/', sessionController.isLoggedIn, (req, res) => {
   if (!res.locals.signedIn) {
   res.status(200).sendFile(path.join(__dirname, '../index.html'));
   } else {
   res.send("verified");
+=======
+app.get('/signedin', sessionController.isLoggedIn, (req, res)=> {
+  if (res.locals.verified === 'verified') {
+    console.log('verified', res.locals);
+    res.status(200).send(res.locals);
+  } else {
+    res.status(200).sendFile(path.join(__dirname, '../index.html'));
+  }
+})
+
+app.get('/signout', sessionController.signOut, (req, res)=> {
+  if(res.locals.signedOut === "signedOut") {
+    res.status(200).send('signedOut');
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
   }
 });
 
@@ -27,6 +42,10 @@ app.use('/signup', login)
 app.use('/login', login);
 // route to favorites
 app.use('/favorites', favorites);
+// route to home page
+app.get('/', (req, res) => {
+   res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
 
 app.use('*', (req, res) => {
   res.status(404).send('Route not found');

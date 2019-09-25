@@ -15,18 +15,25 @@ class Sidebar extends Component {
       secret,
       pressPlay,
       submitChoices,
-      handleOptionChange
+      handleOptionChange,
+      signout
     } = this.props;
     let playSecret = dance ? 'dance' : '';
     const favsList = favs.map((fav, idx) => {
+      console.log(fav, '<---- fav')
       return (
         <li key={idx}>
-          <img src={fav.imgurl} />
+          <a href={fav.yelpurl} target="_blank"> <img src={fav.imgurl}/> </a>
           <div className='fav-details'>
             <h4>{fav.name}</h4>
             <p>{fav.address}</p>
+<<<<<<< HEAD
             <p>Phone: {fav.phone}</p>
             <p>Rating: {fav.rating} <span><i className="fa fa-star" aria-hidden="true"></i>
+=======
+            <p><span>Phone: </span>{fav.phone}</p>
+            <p><span>Rating: </span>{fav.rating} <span><i className="fa fa-star" aria-hidden="true"></i>
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
             </span></p>
           </div>
           <button className='next' onClick={() => deleteFav(fav.yelpid)}>
@@ -94,6 +101,10 @@ class Sidebar extends Component {
             <select className="priceSelector" onChange={(e)=>{
               handleOptionChange(e);
             }}>
+<<<<<<< HEAD
+=======
+              <option value="-">-</option>
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
               <option value="$">$</option>
               <option value="$$">$$</option>
               <option value="$$$">$$$</option>
@@ -101,6 +112,7 @@ class Sidebar extends Component {
             </select>
             <button type="submit" id="selectChoiceButton" name="selectChoiceButton">
               <i className="fa fa-search" />
+<<<<<<< HEAD
               </button>
            </form>
           <button
@@ -112,6 +124,28 @@ class Sidebar extends Component {
           >
             <i className='fa fa-history'></i>
           </button>
+=======
+            </button>
+           </form>
+           <div className="navBar-buttons">
+            <button
+              className='history'
+              onClick={() => {
+                toggleSidebar();
+                favs;
+              }}
+            >
+              <i className='fa fa-history'></i>
+            </button>
+            <button
+              className='signout button'
+              onClick={() => {
+                signout()
+              }} >
+              <i className="fas fa-sign-out-alt"></i>
+            </button>
+           </div>
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
         </div>
       </nav>
     );

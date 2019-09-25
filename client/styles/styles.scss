@@ -115,6 +115,21 @@ nav {
   }
 }
 
+<<<<<<< HEAD
+=======
+.navBar-buttons {
+  display: flex;
+}
+.signout {
+  background: linear-gradient(45deg, rgb(146, 5, 5), rgb(238, 154, 115));
+  color: white;
+  font-size: 20px;
+  height: 60px;
+  width: 50px;
+}
+
+
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
 .center-header {
   display: flex;
   align-items: center;
@@ -355,6 +370,23 @@ button,
   .fav-details {
     width: 100%;
     padding: 10px;
+    
+
+     h4 {
+      font-style: Josefin Sans;
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 17px;
+     }
+     p {
+       font-style: Josefin Sans;
+     }
+     p span {
+       font-weight: bold;
+       font-size: 14px;
+     }
+
+     
   }
 
   button {

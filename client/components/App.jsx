@@ -27,8 +27,13 @@ class App extends Component {
       rerender: false,
       dance: false,
       play: false,
+<<<<<<< HEAD
       price: '$',
       mapView: false
+=======
+      price: null,
+      offset: 0
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
     };
 
     this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -40,6 +45,10 @@ class App extends Component {
     this.pressPlay = this.pressPlay.bind(this);
     this.create = this.create.bind(this);
     this.signup = this.signup.bind(this);
+<<<<<<< HEAD
+=======
+    this.signout = this.signout.bind(this);
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
     this.submitChoices = this.submitChoices.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.audio = new Audio(
@@ -51,6 +60,18 @@ class App extends Component {
   signup() {
     this.setState({ signup: true })
   }  
+
+  signout() {
+    axios
+      .get('/signout', {user: this.state.currentUser})
+      .then(res => {
+        console.log(res)
+        if(res.data === 'signedOut') {
+          this.setState({verified: false, currentUser: '', rerender: true})
+        }
+      })
+      .catch(err=> console.error(err))
+  }
 
   create(e) {
     e.preventDefault();
@@ -65,9 +86,62 @@ class App extends Component {
           this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
         }
       })
-      .catch(err=> console.error)
+      .catch(err=> console.error(err))
   }
 
+  submitChoices(e) {
+    e.preventDefault();
+    const location = e.target.location.value || LOCATION_SEARCHED;
+    const cuisine = e.target.cuisine.value || 'restaurant';
+    const price = this.state.price || '7';
+    axios
+      .get(
+        `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search`,
+        {
+          headers: {
+            Authorization: `Bearer ${key.API_KEY}`
+          },
+          params: {
+            categories: 'restaurants, All',
+            term: `${cuisine}`,
+            limit: 50,
+            location: location,
+            price: `${price.length}`,
+            offset: this.state.offset
+          }
+        }
+      )
+      .then(res => {
+        // create state businessList with necessary infos
+        let businessList = [];
+        for (let restaurant of res.data.businesses) {
+          console.log(restaurant)
+          const businessObj = {
+            yelpid: restaurant.id,
+            name: restaurant.name,
+            address:
+              restaurant.location.display_address[0] +
+              ', ' +
+              restaurant.location.display_address[1],
+            imgurl: restaurant.image_url,
+            yelpurl: restaurant.url,
+            rating: restaurant.rating,
+            phone: restaurant.phone
+          };
+          businessList.push(businessObj);
+        }
+        MAX_SIZE = businessList.length;
+        const currentIndex = getRandomNum(MAX_SIZE);
+
+        this.setState({
+          businessList,
+          currentIndex,
+          rerender: false
+        });
+      })
+  }
+
+<<<<<<< HEAD
 
   submitChoices(e) {
     e.preventDefault();
@@ -79,6 +153,8 @@ class App extends Component {
     console.log(price, '<---- price');
   }
 
+=======
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
   handleOptionChange(e) {
     this.setState({price: e.target.value});
   }
@@ -186,6 +262,17 @@ class App extends Component {
     this.audio.play();
   }
 
+  componentDidMount () {
+    axios
+      .get('/signedin')
+      .then(res=> {
+        if (res.data.verified === 'verified') {
+          this.setState({ verified: true, currentUser: res.data.user, rerender: true});
+        }
+      })
+      .catch(err => console.error)
+  }
+
   componentDidUpdate() {
     if (this.state.rerender) {
       // get data from yelp business endpoint
@@ -217,8 +304,12 @@ class App extends Component {
               imgurl: restaurant.image_url,
               yelpurl: restaurant.url,
               rating: restaurant.rating,
+<<<<<<< HEAD
               phone: restaurant.phone,
               coordinates: restaurant.coordinates
+=======
+              phone: restaurant.phone
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
             };
             businessList.push(businessObj);
           }
@@ -315,6 +406,10 @@ class App extends Component {
           handleOptionChange={this.handleOptionChange}
           price={this.state.price}
           businessList={this.state.businessList}
+<<<<<<< HEAD
+=======
+          signout={this.state.signout}
+>>>>>>> e1d75b22c381befffc4da75f717fbfbe702ca456
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}

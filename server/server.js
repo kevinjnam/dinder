@@ -16,7 +16,7 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 app.get('/signedin', sessionController.isLoggedIn, (req, res)=> {
   if (res.locals.verified === 'verified') {
     console.log('verified', res.locals);
-    res.status(200).send(res.locals);
+    res.status(200).send(res.locals.cookie);
   } else {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
   }

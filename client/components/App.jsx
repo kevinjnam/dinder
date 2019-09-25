@@ -267,7 +267,6 @@ class App extends Component {
           // create state businessList with necessary infos
           let businessList = [];
           for (let restaurant of res.data.businesses) {
-            console.log(restaurant)
             const businessObj = {
               yelpid: restaurant.id,
               name: restaurant.name,
@@ -364,6 +363,7 @@ class App extends Component {
           handleOptionChange={this.handleOptionChange}
           price={this.state.price}
           businessList={this.state.businessList}
+          signout={this.state.signout}
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}

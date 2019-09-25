@@ -28,4 +28,13 @@ sessionController.startSession = (req, res, next) => {
   })
 };
 
+sessionController.signOut = (req, res, next) => {
+  const queryForCookie = `DELETE FROM sessions WHERE "user" = '${req.body.user}'`
+  pool.query(queryForCookie, (err, result) => {
+    if (err) return next(err);
+    res.locals.signedOut = 'signedOut'
+    return next();
+  })
+}
+
 module.exports = sessionController;

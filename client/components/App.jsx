@@ -38,6 +38,7 @@ class App extends Component {
     this.pressPlay = this.pressPlay.bind(this);
     this.create = this.create.bind(this);
     this.signup = this.signup.bind(this);
+    this.signout = this.signout.bind(this);
     this.submitChoices = this.submitChoices.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.audio = new Audio(
@@ -49,6 +50,18 @@ class App extends Component {
   signup() {
     this.setState({ signup: true })
   }  
+
+  signout() {
+    axios
+      .get('/signout', {user: this.state.currentUser})
+      .then(res => {
+        console.log(res)
+        if(res.data === 'signedOut') {
+          this.setState({verified: false, currentUser: '', rerender: true})
+        }
+      })
+      .catch(err=> console.error(err))
+  }
 
   create(e) {
     e.preventDefault();
@@ -63,7 +76,7 @@ class App extends Component {
           this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
         }
       })
-      .catch(err=> console.error)
+      .catch(err=> console.error(err))
   }
 
   submitChoices(e) {

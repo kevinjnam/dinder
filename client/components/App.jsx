@@ -43,6 +43,7 @@ class App extends Component {
     this.signout = this.signout.bind(this);
     this.submitChoices = this.submitChoices.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    // this.viewMap = this.viewMap.bind(this);
     this.audio = new Audio(
       'https://iringtone.net/rington/file?id=8454&type=sound&name=mp3'
     );
@@ -329,9 +330,10 @@ class App extends Component {
     }
   }
 
-  viewMap() {
-    this.setState({mapView: true});
-  }
+  // viewMap() {
+  //   console.log('in viewMap')
+  //   this.setState({mapView: true});
+  // }
 
   render() {
     
@@ -383,11 +385,13 @@ class App extends Component {
           price={this.state.price}
           businessList={this.state.businessList}
           signout={this.signout}
+          viewMap={this.viewMap}
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}
           addFav={this.addFav}
           moveNext={this.moveNext}
+          
         />
       </div>
     );

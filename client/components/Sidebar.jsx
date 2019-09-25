@@ -34,6 +34,7 @@ class Sidebar extends Component {
           <button className='next' onClick={() => deleteFav(fav.yelpid)}>
             <i className='fa fa-times'></i>
           </button>
+          
         </li>
       );
     });
@@ -107,7 +108,9 @@ class Sidebar extends Component {
             </button>
            </form>
            <div className="navBar-buttons">
-            <button
+           {/* <button id="viewMap" 
+           onClick={() => this.props.viewMap()}>View Map</button>
+            <button> */}
               className='history'
               onClick={() => {
                 toggleSidebar();

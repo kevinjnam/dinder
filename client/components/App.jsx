@@ -25,7 +25,8 @@ class App extends Component {
       rerender: false,
       dance: false,
       play: false,
-      price: '$'
+      price: null,
+      offset: 0
     };
 
     this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -67,12 +68,54 @@ class App extends Component {
 
   submitChoices(e) {
     e.preventDefault();
-    const location = e.target.location.value;
-    const cuisine = e.target.cuisine.value;
-    const price = this.state.price;
-    console.log(location)
-    console.log(cuisine)
-    console.log(price, '<---- price');
+    const location = e.target.location.value || LOCATION_SEARCHED;
+    const cuisine = e.target.cuisine.value || 'restaurant';
+    const price = this.state.price || '7';
+    axios
+      .get(
+        `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search`,
+        {
+          headers: {
+            Authorization: `Bearer ${key.API_KEY}`
+          },
+          params: {
+            categories: 'restaurants, All',
+            term: `${cuisine}`,
+            limit: 50,
+            location: location,
+            price: `${price.length}`,
+            offset: this.state.offset
+          }
+        }
+      )
+      .then(res => {
+        // create state businessList with necessary infos
+        let businessList = [];
+        for (let restaurant of res.data.businesses) {
+          console.log(restaurant)
+          const businessObj = {
+            yelpid: restaurant.id,
+            name: restaurant.name,
+            address:
+              restaurant.location.display_address[0] +
+              ', ' +
+              restaurant.location.display_address[1],
+            imgurl: restaurant.image_url,
+            yelpurl: restaurant.url,
+            rating: restaurant.rating,
+            phone: restaurant.phone
+          };
+          businessList.push(businessObj);
+        }
+        MAX_SIZE = businessList.length;
+        const currentIndex = getRandomNum(MAX_SIZE);
+
+        this.setState({
+          businessList,
+          currentIndex,
+          rerender: false
+        });
+      })
   }
 
   handleOptionChange(e) {

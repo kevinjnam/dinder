@@ -1,12 +1,12 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const usercontroller = require("../controllers/UserController");
+const usercontroller = require('../controllers/UserController.js');
+const sessionController = require('../controllers/sessionController.js');
 
-router.post("/", usercontroller.verifyUser, (req, res) => {
+router.post("/", usercontroller.verifyUser, sessionController.startSession, (req, res) => {
 	res.send("verified");
 });
-router.post("/create", usercontroller.createUser, (req, res) => {
-	console.log('inside router post signup')
+router.post("/create", usercontroller.createUser, sessionController.startSession, (req, res) => {
 	res.send("user Created");
 });
 module.exports = router;

@@ -15,7 +15,7 @@ sessionController.isLoggedIn = (req, res, next) => {
     pool.query(queryForCookie, (err, result)=> {
       if (err) return next(err);
       if (result !== undefined) {
-      res.locals = result.rows[0];
+      res.locals.cookie = result.rows[0];
       res.locals.verified = 'verified';
       return next();
      }

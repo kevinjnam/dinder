@@ -1,6 +1,6 @@
 const Pool = require("pg").Pool;
 let url =
-	"postgres://kpbrjtvt:tmU2ixXRIwrYp1_uBqvugQbY18KfYQwi@otto.db.elephantsql.com:5432/kpbrjtvt";
+	"postgres://hddufohk:1ur6fgrvf7bVO_oN61Qbd-xr5gBuk_mi@salt.db.elephantsql.com:5432/hddufohk";
 const pool = new Pool({
 	connectionString: url
 });

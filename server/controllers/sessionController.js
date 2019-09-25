@@ -1,7 +1,7 @@
 const Pool = require("pg").Pool;
 const uuidv4 = require('uuid/v4')
 let url =
-	"postgres://kpbrjtvt:tmU2ixXRIwrYp1_uBqvugQbY18KfYQwi@otto.db.elephantsql.com:5432/kpbrjtvt";
+	"postgres://hddufohk:1ur6fgrvf7bVO_oN61Qbd-xr5gBuk_mi@salt.db.elephantsql.com:5432/hddufohk";
 const pool = new Pool({
 	connectionString: url
 });
@@ -9,19 +9,16 @@ const pool = new Pool({
 const sessionController = {};
 
 sessionController.isLoggedIn = (req, res, next) => {
-  console.log(req.headers.cookie)
-  if (req.headers.cookie !== undefined) {
-    const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
-    pool.query(queryForCookie, (err, result)=> {
-      // if (err) return next(err);
-      if (result !== undefined) {
-      res.locals.cookie = result.rows[0];
-      res.locals.verified = 'verified';
-      return next();
-     }
-    })
+  if (req.headers.cookie !== undefined) return next()
+  const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
+  pool.query(queryForCookie, (err, result)=> {
+    if (result !== undefined) return next();
+    if (err) return next(err);
+    res.locals.cookie = result.rows[0];
+    res.locals.verified = 'verified';
+    console.log(res.locals)
     return next();
-  }
+  })
 }
 
 sessionController.startSession = (req, res, next) => {

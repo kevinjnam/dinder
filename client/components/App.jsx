@@ -244,6 +244,7 @@ class App extends Component {
     axios
       .get('/signedin')
       .then(res=> {
+
         if (res.data.verified === 'verified') {
           this.setState({ verified: true, currentUser: res.data.user, rerender: true});
         }

@@ -240,6 +240,7 @@ class App extends Component {
     axios
       .get('/signedin')
       .then(res=> {
+        console.log('back on the front end',res.data)
         if (res.data.verified === 'verified') {
           this.setState({ verified: true, currentUser: res.data.user, rerender: true});
         }

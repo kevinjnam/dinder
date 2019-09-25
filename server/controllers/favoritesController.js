@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool;
 const pool = new Pool({
   connectionString:
-    'postgres://kpbrjtvt:tmU2ixXRIwrYp1_uBqvugQbY18KfYQwi@otto.db.elephantsql.com:5432/kpbrjtvt'
+    'postgres://hddufohk:1ur6fgrvf7bVO_oN61Qbd-xr5gBuk_mi@salt.db.elephantsql.com:5432/hddufohk'
 });
 
 // get favorites
@@ -14,6 +14,7 @@ const getFavorites = (req, res, next) => {
       if (error) {
         res.json(error);
       }
+      console.log(favorites.row)
       res.locals.favorites = favorites.rows;
       return next();
     }

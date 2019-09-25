@@ -28,7 +28,9 @@
     "path": "^0.12.7",
     "pg": "^7.12.1",
     "react": "^16.5.2",
-    "react-hot-loader": "^4.6.3"
+    "react-dom": "^16.9.0",
+    "react-hot-loader": "^4.6.3",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

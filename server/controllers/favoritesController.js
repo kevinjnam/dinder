@@ -6,11 +6,12 @@ const pool = new Pool({
 
 // get favorites
 const getFavorites = (req, res, next) => {
-  arr = [req.body.user];
+  const arr = [req.body.user];
   pool.query(
     `SELECT * FROM favorites WHERE "user" = $1 ORDER BY _id`,
     arr,
     (error, favorites) => {
+      console.log('here in favorites now', favorites[0])
       if (error) {
         res.json(error);
       }

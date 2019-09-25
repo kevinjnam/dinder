@@ -63,6 +63,8 @@ class MainContainer extends Component {
     // destructuring props
     const { currentBusiness, addFav, moveNext } = this.props;
 
+    <button id="viewMap" 
+    onClick={(e) => this.props.viewMap()}></button>
     // when the image is clicked show details
     if (this.state.fetchingDetails) {
       return (

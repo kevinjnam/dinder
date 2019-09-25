@@ -6,7 +6,6 @@ import key from '../../config/keys';
 import Login from './Loginpage.jsx';
 import Signup from './SignupPage.jsx';
 import MapDisplay from './MapDisplay.jsx';
-import ReactMapGL from 'react-map-gl';
 
 const LOCATION_SEARCHED = '1600 Main St 1st floor, Venice, CA 90291';
 let MAX_SIZE = 0;
@@ -54,6 +53,16 @@ class App extends Component {
     this.setState({ signup: true })
   }  
 
+  signout() {
+    axios.post('/signout', {user: this.state.currentUser})
+    .then(res => {
+      if (res.data === 'signedOut') {
+        this.setState({verified: false, currentUser: '', rerender: true})
+        }
+      })
+      .catch(err=> console.error(err))
+  };
+
   create(e) {
     e.preventDefault();
     const user = e.target.username.value;
@@ -73,12 +82,53 @@ class App extends Component {
 
   submitChoices(e) {
     e.preventDefault();
-    const location = e.target.location.value;
-    const cuisine = e.target.cuisine.value;
-    const price = this.state.price;
-    console.log(location)
-    console.log(cuisine)
-    console.log(price, '<---- price');
+    const location = e.target.location.value || LOCATION_SEARCHED;
+    const cuisine = e.target.cuisine.value || 'restaurant';
+    const price = this.state.price || '7';
+    axios
+      .get(
+        `${'https://cors-anywhere.herokuapp.com/'}https://api.yelp.com/v3/businesses/search`,
+        {
+          headers: {
+            Authorization: `Bearer ${key.API_KEY}`
+          },
+          params: {
+            categories: 'restaurants, All',
+            term: `${cuisine}`,
+            limit: 50,
+            location: location,
+            price: `${price.length}`,
+            offset: this.state.offset
+          }
+        }
+      )
+      .then(res => {
+        // create state businessList with necessary infos
+        let businessList = [];
+        for (let restaurant of res.data.businesses) {
+          console.log(restaurant)
+          const businessObj = {
+            yelpid: restaurant.id,
+            name: restaurant.name,
+            address:
+              restaurant.location.display_address[0] +
+              ', ' +
+              restaurant.location.display_address[1],
+            imgurl: restaurant.image_url,
+            yelpurl: restaurant.url,
+            rating: restaurant.rating,
+            phone: restaurant.phone
+          };
+          businessList.push(businessObj);
+        }
+        MAX_SIZE = businessList.length;
+        const currentIndex = getRandomNum(MAX_SIZE);
+        this.setState({
+          businessList,
+          currentIndex,
+          rerender: false
+        });
+      })
   }
 
   handleOptionChange(e) {
@@ -188,6 +238,17 @@ class App extends Component {
     this.audio.play();
   }
 
+  componentDidMount () {
+    axios
+      .get('/signedin')
+      .then(res=> {
+        if (res.data.verified === 'verified') {
+          this.setState({ verified: true, currentUser: res.data.user, rerender: true});
+        }
+      })
+      .catch(err => console.error)
+  }
+  
   componentDidUpdate() {
     if (this.state.rerender) {
       // get data from yelp business endpoint
@@ -220,7 +281,7 @@ class App extends Component {
               yelpurl: restaurant.url,
               rating: restaurant.rating,
               phone: restaurant.phone,
-              coordinates: restaurant.coordinates
+              // coordinates: restaurant.coordinates
             };
             businessList.push(businessObj);
           }
@@ -265,8 +326,11 @@ class App extends Component {
     }
   }
 
+  viewMap() {
+    this.setState({mapView: true});
+  }
+
   render() {
-    
     
     if (this.state.signup === true) {
       return (
@@ -278,7 +342,7 @@ class App extends Component {
     if (this.state.verified === false) {
       return (
         <main>
-          <Login verification={this.verify} signup={this.signup} yelpAuth={this.yelpAuth}/>
+          <Login verification={this.verify} signup={this.signup} />
         </main>
       );
     }
@@ -295,7 +359,7 @@ class App extends Component {
     if (this.state.mapView === true) {
       return (
         <MapDisplay 
-        mapView={this.state.mapView} />
+        viewMap={this.state.viewMap} />
         )
       }
 

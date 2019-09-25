@@ -15,6 +15,7 @@ const verifyUser = (req, res, next) => {
 	let queryforPass = `SELECT "password" FROM "Users" WHERE "user" = $1`;
 	pool.query(queryforPass, arr, (err, result) => {
 		if (err) console.log("no result for user found");
+		console.log('here in query for verify user', result.rows[0])
 		if (result.rows[0].password === req.body.pass) {
 			return next();
 		}

@@ -1,22 +1,16 @@
-const Pool = require("pg").Pool;
-const uuidv4 = require('uuid/v4')
-let url =
-	"postgres://hddufohk:1ur6fgrvf7bVO_oN61Qbd-xr5gBuk_mi@salt.db.elephantsql.com:5432/hddufohk";
-const pool = new Pool({
-	connectionString: url
-});
-
+const pool = require ('../database.js');
+const uuidv4 = require('uuid/v4');
 const sessionController = {};
 
 sessionController.isLoggedIn = (req, res, next) => {
-  if (req.headers.cookie !== undefined) return next()
+  if (req.headers.cookie === undefined) return next()
   const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
   pool.query(queryForCookie, (err, result)=> {
-    if (result !== undefined) return next();
+    if (result === undefined) return next();
     if (err) return next(err);
     res.locals.cookie = result.rows[0];
     res.locals.verified = 'verified';
-    console.log(res.locals)
+    console.log('in the cookie verifier', res.locals)
     return next();
   })
 }
@@ -32,7 +26,6 @@ sessionController.startSession = (req, res, next) => {
 };
 
 sessionController.signOut = (req, res, next) => {
-  console.log('in sign out controller', req.body)
   const queryForCookie = `DELETE FROM sessions WHERE "user" = '${req.body.user}'`
   pool.query(queryForCookie, (err, result) => {
     if (err) return next(err);

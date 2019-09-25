@@ -15,8 +15,8 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 
 app.get('/signedin', sessionController.isLoggedIn, (req, res)=> {
   if (res.locals.verified === 'verified') {
-    console.log('verified', res.locals);
-    res.status(200).send(res.locals.cookie);
+    console.log('back in server before sending to front end', res.locals)
+    res.status(200).send(res.locals);
   } else {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
   }
@@ -24,7 +24,6 @@ app.get('/signedin', sessionController.isLoggedIn, (req, res)=> {
 
 app.use('/signout', sessionController.signOut, (req, res)=> {
   if (res.locals.signedOut === "signedOut") {
-    console.log('returngin from sign out', res.locals)
     res.status(200).send('signedOut');
   }
 });

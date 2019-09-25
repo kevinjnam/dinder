@@ -55,28 +55,26 @@ class App extends Component {
     axios
       .post('/signout', {user: this.state.currentUser})
       .then(res => {
-        console.log(res)
+        console.log('signed out', res.data)
         if(res.data === 'signedOut') {
           this.setState({verified: false, currentUser: '', rerender: true})
         }
       })
-      .catch(err=> console.error(err))
+      .catch(err=> console.log(err))
   }
 
   create(e) {
     e.preventDefault();
     const user = e.target.username.value;
     const pass = e.target.password.value;
-    console.log('these are the input values', user, pass)
     axios
       .post('/signup/create', { user: user, pass: pass })
       .then(res => { 
-        console.log(res);
         if(res.data === 'user Created') {
-          this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
+          this.setState({ verified: true, currentUser: user, signup: false})
         }
       })
-      .catch(err=> console.error(err))
+      .catch(err=> console.log(err))
   }
 
   submitChoices(e) {
@@ -149,7 +147,7 @@ class App extends Component {
           this.setState({ verified: true, currentUser: user, rerender: true });
         }
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err));
   }
 
   toggleSidebar() {
@@ -192,7 +190,7 @@ class App extends Component {
       .then(res => {
         console.log(res.data);
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err));
   }
 
   // function invokes when '??' button is clicked in Sidebar
@@ -206,7 +204,7 @@ class App extends Component {
         this.setState({ favs: updateFavs });
         console.log(res.data);
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err));
   }
 
   // function invokes when the next button is clicked in MainContainer
@@ -240,12 +238,11 @@ class App extends Component {
     axios
       .get('/signedin')
       .then(res=> {
-        console.log('back on the front end',res.data)
         if (res.data.verified === 'verified') {
-          this.setState({ verified: true, currentUser: res.data.user, rerender: true});
+          this.setState({ verified: true, currentUser: res.data.cookie.user, rerender: true});
         }
       })
-      .catch(err => console.error)
+      .catch(err => console.log(err))
   }
 
   componentDidUpdate() {

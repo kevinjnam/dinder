@@ -1,9 +1,4 @@
-const Pool = require("pg").Pool;
-let url =
-	"postgres://hddufohk:1ur6fgrvf7bVO_oN61Qbd-xr5gBuk_mi@salt.db.elephantsql.com:5432/hddufohk";
-const pool = new Pool({
-	connectionString: url
-});
+const pool = require ('../database.js');
 
 // const SALT_WORK_FACTOR = 10;
 // const bcrypt = require('bcryptjs');

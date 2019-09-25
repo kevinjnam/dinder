@@ -21,7 +21,7 @@ sessionController.isLoggedIn = (req, res, next) => {
 
 sessionController.startSession = (req, res, next) => {
   let cookie = uuidv4();
-  const queryForCookie = `INSERT INTO sessions ("cookieId", "user") VALUES ('${cookie}', '${req.body.user}')`;
+  const queryForCookie = `INSERT INTO sessions ("cookieId", "user") VALUES ('${cookie}', '${req.body.user}') ON CONFLICT ("user") DO UPDATE SET "cookieId" = '${cookie}'`;
   pool.query(queryForCookie, (err, result)=> {
     if (err) return next (err);
     res.cookie('dinderCookie', cookie);

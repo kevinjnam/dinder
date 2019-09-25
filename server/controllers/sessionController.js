@@ -10,7 +10,7 @@ const sessionController = {};
 
 sessionController.isLoggedIn = (req, res, next) => {
   console.log(req.cookies)
-  const queryForCookie = `SELECT * from sessions WHERE cookieID = '${req.cookies.dinderCookie}'`
+  const queryForCookie = `SELECT * from sessions WHERE "cookieID" = '${req.cookies.dinderCookie}'`
   pool.query(queryForCookie, (err, result)=> {
     if (err) return next(err);
     res.locals.signedIn = true;

@@ -23,16 +23,14 @@
     "axios": "^0.19.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
+    "cors": "^2.8.5",
     "express": "^4.16.3",
     "node-fetch": "^2.6.0",
     "path": "^0.12.7",
     "pg": "^7.12.1",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-hot-loader": "^4.6.3",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
-    "reactstrap": "^8.0.1"
+    "react-dom": "^16.9.0",
+    "react-hot-loader": "^4.6.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

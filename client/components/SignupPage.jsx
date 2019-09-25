@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-const Login = ({ verification, signup, yelpAuth }) => {
+const Signup = ({ creation }) => {
   return (
     <div className='modal' id='login'>
       <div className='login-header'>
         <div className='image-frame'>
           <img className='logo' src={'../assets/logo.png'} />
         </div>
-        <h1>Dinder Login</h1>
+        <h1>Dinder Sign Up</h1>
       </div>
-      <form onSubmit={verification}>
+      <form onSubmit={creation}>
         <div>
           <label for='user'>Username:</label>
           <input type='text' name='username' id='user' required={true} />
@@ -22,10 +22,7 @@ const Login = ({ verification, signup, yelpAuth }) => {
           <i className='fa fa-sign-in-alt'></i>
         </button>
       </form>
-      <button className='sign-up' onClick={() => signup()}>Need an account?<br/>Sign up here...</button>
-      <button className='yelp-sign-in' onClick={() => yelpAuth()}>Sign in with Yelp</button>
-
     </div>
   );
 };
-export default Login;
+export default Signup;

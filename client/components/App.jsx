@@ -4,6 +4,8 @@ import MainContainer from './MainContainer.jsx';
 import axios from 'axios';
 import key from '../../config/keys';
 import Login from './Loginpage.jsx';
+import Signup from './SignupPage.jsx';
+
 const LOCATION_SEARCHED = '1600 Main St 1st floor, Venice, CA 90291';
 let MAX_SIZE = 0;
 
@@ -19,6 +21,7 @@ class App extends Component {
       isSidebarOpen: false,
       currentUser: '',
       verified: false,
+      signup: false,
       rerender: false,
       dance: false,
       play: false
@@ -31,12 +34,33 @@ class App extends Component {
     this.verify = this.verify.bind(this);
     this.secret = this.secret.bind(this);
     this.pressPlay = this.pressPlay.bind(this);
+    this.create = this.create.bind(this);
+    this.signup = this.signup.bind(this);
     this.audio = new Audio(
       'https://iringtone.net/rington/file?id=8454&type=sound&name=mp3'
     );
   }
 
   // function invokes when the show Favs button is clicked in Sidebar
+  signup() {
+    this.setState({ signup: true })
+  }  
+
+  create(e) {
+    e.preventDefault();
+    const user = e.target.username.value;
+    const pass = e.target.password.value;
+    console.log('these are the input values', user, pass)
+    axios
+      .post('/signup/create', { user: user, pass: pass })
+      .then(res => { 
+        if(res.data === 'user Created') {
+          this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
+        }
+      })
+      .catch(err=> console.error)
+  }
+
   //login functions
   verify(e) {
     e.preventDefault();
@@ -209,10 +233,17 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.signup === true) {
+      return (
+        <main>
+          <Signup creation={this.create}  />
+        </main>
+      )
+    }
     if (this.state.verified === false) {
       return (
         <main>
-          <Login verification={this.verify} />
+          <Login verification={this.verify} signup={this.signup} />
         </main>
       );
     }

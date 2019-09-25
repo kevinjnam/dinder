@@ -54,10 +54,12 @@ class App extends Component {
   }  
 
   signout() {
-    axios.post('/signout', {user: this.state.currentUser})
-    .then(res => {
-      if (res.data === 'signedOut') {
-        this.setState({verified: false, currentUser: '', rerender: true})
+    axios
+      .post('/signout', {user: this.state.currentUser})
+      .then(res => {
+        console.log(res)
+        if(res.data === 'signedOut') {
+          this.setState({verified: false, currentUser: '', rerender: true})
         }
       })
       .catch(err=> console.error(err))
@@ -379,6 +381,7 @@ class App extends Component {
           handleOptionChange={this.handleOptionChange}
           price={this.state.price}
           businessList={this.state.businessList}
+          signout={this.signout}
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}

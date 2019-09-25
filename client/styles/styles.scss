@@ -355,6 +355,23 @@ button,
   .fav-details {
     width: 100%;
     padding: 10px;
+    
+
+     h4 {
+      font-style: Josefin Sans;
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 17px;
+     }
+     p {
+       font-style: Josefin Sans;
+     }
+     p span {
+       font-weight: bold;
+       font-size: 14px;
+     }
+
+     
   }
 
   button {

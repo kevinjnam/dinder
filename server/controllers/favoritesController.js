@@ -22,12 +22,12 @@ const getFavorites = (req, res, next) => {
 
 // add favorite
 const addFavorite = (req, res, next) => {
-  const { name, address, imgurl, yelpid, yelpurl } = req.body.business;
+  const { name, address, imgurl, yelpid, yelpurl, rating, phone } = req.body.business;
   const user = req.body.user;
 
   pool.query(
-    `INSERT INTO favorites (name, address, imgurl, yelpid, yelpurl, "user") VALUES ($1, $2, $3, $4, $5, $6)`,
-    [name, address, imgurl, yelpid, yelpurl, user],
+    `INSERT INTO favorites (name, address, imgurl, yelpid, yelpurl, rating, phone, "user") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+    [name, address, imgurl, yelpid, yelpurl, rating, phone, user],
     error => {
       if (error) {
         res.json(error);

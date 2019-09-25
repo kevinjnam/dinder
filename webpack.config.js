@@ -14,7 +14,7 @@ module.exports = {
     proxy: {
       context: ['/favorites', '/login', '/assets', '/signup'],
       target: 'http://localhost:3000'
-    }
+      }
   },
   module: {
     rules: [

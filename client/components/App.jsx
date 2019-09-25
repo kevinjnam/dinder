@@ -57,6 +57,7 @@ class App extends Component {
     axios
       .post('/signup/create', { user: user, pass: pass })
       .then(res => { 
+        console.log(res);
         if(res.data === 'user Created') {
           this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
         }
@@ -84,6 +85,8 @@ class App extends Component {
     e.preventDefault();
     const user = e.target.username.value;
     const pass = e.target.password.value;
+
+    console.log('data to login')
 
     axios
       .post('/login', { user: user, pass: pass })

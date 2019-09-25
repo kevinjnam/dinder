@@ -15,7 +15,7 @@ class App extends Component {
     this.state = {
       businessList: [],
       currentIndex: 0,
-      visited: {},
+      visited: [],
       favs: [],
       fetchingDetails: false,
       isSidebarOpen: false,
@@ -26,6 +26,8 @@ class App extends Component {
       dance: false,
       play: false,
       price: null,
+      location: LOCATION_SEARCHED,
+      cuisine: null,
       offset: 0
     };
 
@@ -40,6 +42,8 @@ class App extends Component {
     this.signup = this.signup.bind(this);
     this.signout = this.signout.bind(this);
     this.submitChoices = this.submitChoices.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleCuisineChange = this.handleCuisineChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.audio = new Audio(
       'https://iringtone.net/rington/file?id=8454&type=sound&name=mp3'
@@ -79,10 +83,10 @@ class App extends Component {
       .catch(err=> console.error(err))
   }
 
-  submitChoices(e) {
-    e.preventDefault();
-    const location = e.target.location.value || LOCATION_SEARCHED;
-    const cuisine = e.target.cuisine.value || 'restaurant';
+  submitChoices() {
+    console.log(this.state.location, this.state.cuisine, this.state.price);
+    const location = this.state.location || LOCATION_SEARCHED;
+    const cuisine = this.state.cuisine || 'restaurant';
     const price = this.state.price || '7';
     axios
       .get(
@@ -135,6 +139,14 @@ class App extends Component {
     this.setState({price: e.target.value});
   }
 
+  handleLocationChange(e) {
+    this.setState({location: e.target.value});
+  }
+
+  handleCuisineChange(e) {
+    this.setState({cuisine: e.target.value});
+  }
+
 
   //login functions
   verify(e) {
@@ -160,11 +172,14 @@ class App extends Component {
 
   // function invokes when the heart button is clicked in MainContainer
   addFav() {
+    if(this.state.visited.length % 50 === 49) {
+      this.submitChoices();
+    }
     console.log(this.state.businessList, '<--- businessList')
     console.log(this.state.visited, '<--- visited')
     
     let favs = this.state.favs.slice();
-    let visited = Object.assign(this.state.visited);
+    let visited = this.state.visited.slice();
 
     favs.push(this.state.businessList[this.state.currentIndex]);
     visited[this.state.currentIndex] = true;
@@ -211,6 +226,10 @@ class App extends Component {
 
   // function invokes when the next button is clicked in MainContainer
   moveNext() {
+    if(Object.keys(this.state.visited).length % 50 === 49) {
+      this.submitChoices();
+    }
+
     let visited = Object.assign(this.state.visited);
     visited[this.state.currentIndex] = true;
 
@@ -241,7 +260,8 @@ class App extends Component {
       .get('/signedin')
       .then(res=> {
         console.log('back on the front end',res.data)
-        if (res.data.verified === 'verified') {
+        if (res.data.verified !== 'verified') {
+          console.log('hit!')
           this.setState({ verified: true, currentUser: res.data.user, rerender: true});
         }
       })
@@ -362,6 +382,8 @@ class App extends Component {
           secret={this.secret}
           pressPlay={this.pressPlay}
           handleOptionChange={this.handleOptionChange}
+          handleLocationChange={this.handleLocationChange}
+          handleCuisineChange={this.handleCuisineChange}
           price={this.state.price}
           businessList={this.state.businessList}
           signout={this.signout}

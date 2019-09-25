@@ -14,7 +14,7 @@ const getFavorites = (req, res, next) => {
       if (error) {
         res.json(error);
       }
-      console.log(favorites.row)
+
       res.locals.favorites = favorites.rows;
       return next();
     }
@@ -23,7 +23,15 @@ const getFavorites = (req, res, next) => {
 
 // add favorite
 const addFavorite = (req, res, next) => {
-  const { name, address, imgurl, yelpid, yelpurl, rating, phone } = req.body.business;
+  const {
+    name,
+    address,
+    imgurl,
+    yelpid,
+    yelpurl,
+    rating,
+    phone
+  } = req.body.business;
   const user = req.body.user;
 
   pool.query(

@@ -9,12 +9,11 @@ const pool = new Pool({
 const sessionController = {};
 
 sessionController.isLoggedIn = (req, res, next) => {
-  console.log(req.cookies)
-  const queryForCookie = `SELECT * from sessions WHERE cookieID = '${req.cookies.dinderCookie}'`
+  const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
   pool.query(queryForCookie, (err, result)=> {
     if (err) return next(err);
-    res.locals.signedIn = true;
-    console.log(res.locals.signedIn);
+    res.locals= result.rows[0];
+    res.locals.verified = 'verified';
     return next();
   })
 }
@@ -24,7 +23,7 @@ sessionController.startSession = (req, res, next) => {
   const queryForCookie = `INSERT INTO sessions ("cookieId", "user") VALUES ('${cookie}', '${req.body.user}') ON CONFLICT ("user") DO UPDATE SET "cookieId" = '${cookie}'`;
   pool.query(queryForCookie, (err, result)=> {
     if (err) return next (err);
-    res.cookie('dinderCookie', cookie);
+    res.cookie('dinderCookie', cookie ,{httpOnly: true});
     return next()
   })
 };

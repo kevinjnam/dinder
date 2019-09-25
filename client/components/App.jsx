@@ -129,8 +129,6 @@ class App extends Component {
     const user = e.target.username.value;
     const pass = e.target.password.value;
 
-    console.log('data to login')
-
     axios
       .post('/login', { user: user, pass: pass })
       .then(res => {
@@ -223,6 +221,17 @@ class App extends Component {
   pressPlay() {
     this.setState({ play: true });
     this.audio.play();
+  }
+
+  componentDidMount () {
+    axios
+      .get('/signedin')
+      .then(res=> {
+        if (res.data.verified === 'verified') {
+          this.setState({ verified: true, currentUser: res.data.user, rerender: true});
+        }
+      })
+      .catch(err => console.error)
   }
 
   componentDidUpdate() {

@@ -7,7 +7,6 @@ class Sidebar extends Component {
 
   render() {
     const {
-      businessList,
       isSidebarOpen,
       deleteFav,
       favs,
@@ -18,19 +17,17 @@ class Sidebar extends Component {
       submitChoices,
       handleOptionChange
     } = this.props;
-
-    const star = <i class="fa fa-star" aria-hidden="true"></i>
     let playSecret = dance ? 'dance' : '';
     const favsList = favs.map((fav, idx) => {
       return (
         <li key={idx}>
           <img src={fav.imgurl} />
           <div className='fav-details'>
-            <p>{fav.name}</p>
+            <h4>{fav.name}</h4>
             <p>{fav.address}</p>
             <p>Phone: {fav.phone}</p>
-            <p>Rating: {star.repeat(fav.rating)}</p>
-
+            <p>Rating: {fav.rating} <span><i className="fa fa-star" aria-hidden="true"></i>
+            </span></p>
           </div>
           <button className='next' onClick={() => deleteFav(fav.yelpid)}>
             <i className='fa fa-times'></i>

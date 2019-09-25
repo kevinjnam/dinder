@@ -10,7 +10,6 @@ const pool = new Pool({
 
 
 const verifyUser = (req, res, next) => {
-  console.log('verifying');
 	let arr = [req.body.user];
 	let queryforPass = `SELECT "password" FROM "Users" WHERE "user" = $1`;
 	pool.query(queryforPass, arr, (err, result) => {

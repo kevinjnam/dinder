@@ -109,9 +109,36 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 1024px;
+    width: 100%;
     margin: auto;
     position: relative;
+  }
+}
+
+.center-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  input {
+    width: 300px;
+    height: 30px;
+    border-radius: 20px;
+    margin-right: 5px;
+  }
+
+  select {
+    width: 75px;
+    height: 30px;
+    border-radius: 20px;
+  }
+
+  button {
+    background: linear-gradient(45deg, green, lightgreen);
+    color: white;
+    font-size: 20px;
+    height: 30px;
+    width: 50px;
   }
 }
 
@@ -293,7 +320,7 @@ button,
   border-radius: 0 0 20px 20px;
   position: absolute;
   top: 0;
-  right: calc((100% - 1024px) / 2);
+  right: 0;
   z-index: 2;
 
   .popup-header {
@@ -334,6 +361,7 @@ button,
     flex: 0 0 auto;
   }
 }
+
 
 // dance
 .dance .modal {

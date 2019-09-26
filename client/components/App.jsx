@@ -85,7 +85,7 @@ class App extends Component {
   }
 
   submitChoices() {
-    console.log(this.state.location, this.state.cuisine, this.state.price);
+    // console.log(this.state.location, this.state.cuisine, this.state.price);
     const location = this.state.location || LOCATION_SEARCHED;
     const cuisine = this.state.cuisine || 'restaurant';
     const price = this.state.price || '7';
@@ -120,7 +120,8 @@ class App extends Component {
             imgurl: restaurant.image_url,
             yelpurl: restaurant.url,
             rating: restaurant.rating,
-            phone: restaurant.phone
+            phone: restaurant.phone,
+            coordinates: restaurant.coordinates
           };
           businessList.push(businessObj);
         }
@@ -158,7 +159,7 @@ class App extends Component {
     axios
       .post('/login', { user: user, pass: pass })
       .then(res => {
-        console.log('testing response from login', res)
+        // console.log('testing response from login', res)
         if (res.data === 'verified') {
           this.setState({ verified: true, currentUser: user, rerender: true });
         }
@@ -306,7 +307,7 @@ class App extends Component {
               coordinates: restaurant.coordinates
             };
             businessList.push(businessObj);
-            console.log(businessObj.coordinates)
+            // console.log(businessObj.coordinates)
           }
           // get favorites from back end database
           axios
@@ -377,7 +378,7 @@ class App extends Component {
     }
     
     if (this.state.mapView === true) {
-      console.log('props for coordinates being passed down', this.state.businessList)
+      console.log('these are the props being passed down', this.state.businessList)
       return (
         <MapDisplay 
         viewMap={this.state.viewMap}

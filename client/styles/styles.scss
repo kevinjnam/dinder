@@ -443,11 +443,19 @@ button,
 }
 
 .markerBtn {
-  background-color: none;
+  background-color: transparent;
   border: none;
   cursor: pointer;
+  padding: 0px;
 }
 .markerBtn img{
   width: 27.5px;
   height: 30px;
+}
+
+.mapboxgl-marker {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0px;
 }

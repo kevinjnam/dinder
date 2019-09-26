@@ -22,7 +22,7 @@ class Sidebar extends Component {
     } = this.props;
     let playSecret = dance ? 'dance' : '';
     const favsList = favs.map((fav, idx) => {
-      console.log(fav, '<---- fav')
+      // console.log(fav, '<---- fav')
       return (
         <li key={idx}>
           <a href={fav.yelpurl} target="_blank"> <img src={fav.imgurl}/> </a>

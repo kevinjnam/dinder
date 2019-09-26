@@ -16,6 +16,8 @@ class Sidebar extends Component {
       pressPlay,
       submitChoices,
       handleOptionChange,
+      handleLocationChange,
+      handleCuisineChange,
       signout
     } = this.props;
     let playSecret = dance ? 'dance' : '';
@@ -90,22 +92,20 @@ class Sidebar extends Component {
           >
             <img className='logo' src={'../assets/logo.png'} />
           </div>      
-           <form className="center-header" onSubmit={submitChoices}>
-            <input text="text" id='location' name="location" placeholder="City or Zip Code..." />
-            <input text="text" id='cuisine' name="cuisine" placeholder="Choose Your Cuisine..." />
-            <select className="priceSelector" onChange={(e)=>{
-              handleOptionChange(e);
-            }}>
+           <div className="center-header">
+            <input text="text" id='location' name="location" placeholder="City or Zip Code..." onChange={(e)=>{handleLocationChange(e)}} />
+            <input text="text" id='cuisine' name="cuisine" placeholder="Choose Your Cuisine..." onChange={(e)=>{handleCuisineChange(e)}} />
+            <select className="priceSelector" onChange={(e)=>{handleOptionChange(e)}}>
               <option value="-">-</option>
               <option value="$">$</option>
               <option value="$$">$$</option>
               <option value="$$$">$$$</option>
               <option value="$$$$">$$$$</option>
             </select>
-            <button type="submit" id="selectChoiceButton" name="selectChoiceButton">
+            <button onClick={submitChoices} id="selectChoiceButton" name="selectChoiceButton">
               <i className="fa fa-search" />
             </button>
-           </form>
+           </div>
            <div className="navBar-buttons">
             <button
               className='history'

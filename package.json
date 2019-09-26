@@ -37,6 +37,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
+    "bcryptjs": "^2.4.3",
     "css-loader": "^1.0.1",
     "file-loader": "^4.2.0",
     "node-sass": "^4.12.0",

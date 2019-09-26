@@ -121,7 +121,7 @@ nav {
 .signout {
   background: linear-gradient(45deg, rgb(146, 5, 5), rgb(238, 154, 115));
   color: white;
-  font-size: 20px;
+  font-size: 25px;
   height: 64px;
   width: 50px;
   box-shadow: 0 4px 4px -2px #000000;
@@ -130,6 +130,7 @@ nav {
 
 
 .center-header {
+  margin-left: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,15 +138,17 @@ nav {
   input {
     width: 300px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 5px;
     margin-right: 5px;
     padding-left: 10px;
+    border: 1px solid black;
   }
 
   select {
     width: 75px;
-    height: 30px;
+    height: 34px;
     border-radius: 20px;
+    border: 1px solid black;
   }
 
   button {
@@ -396,6 +399,22 @@ button,
   }
 }
 
+#viewMap {
+  background-color: black;
+  font-size: 40px;
+  width:80px;
+  height: 60px;
+  box-shadow: 0 4px 4px -2px #000000;
+  border-bottom: 3.8px black solid;
+}
+
+#viewMapInMapDisplay {
+  z-index: 2;
+  background-color: red;
+  font-size: 40px;
+  width: 60px;
+  margin-top: 5px;
+}
 
 // dance
 .dance .modal {
@@ -424,7 +443,7 @@ button,
 }
 
 .markerBtn {
-  background: none;
+  background-color: none;
   border: none;
   cursor: pointer;
 }

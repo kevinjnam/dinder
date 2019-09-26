@@ -108,17 +108,13 @@ class Sidebar extends Component {
             </button>
            </div>
            <div className="navBar-buttons">
-           <button id="viewMap" 
-           onClick={() => this.props.viewMap()}>View Map</button>
-          <button className='history'
-              onClick={() => {
+              <button id="viewMap" onClick={() => this.props.viewMap()}><i class="fas fa-map-marked-alt"></i></button>
+              <button className='history' onClick={() => {
                 toggleSidebar();
                 favs;
               }}>
-              
               <i className='fa fa-history'></i>
             </button>
-            </div>
             <button
               className='signout button'
               onClick={() => {
@@ -126,6 +122,7 @@ class Sidebar extends Component {
               }} >
               <i className="fas fa-sign-out-alt"></i>
             </button>
+            </div>
            </div>
       </nav>
     );

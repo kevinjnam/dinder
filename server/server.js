@@ -41,6 +41,16 @@ app.get('/', (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).send('Route not found');
 });
+
+app.use((err, req, res, next)=> {
+  const defaultErr = {
+    message: `Global error handler caught the following error ${err}`,
+    status: 400, 
+  }
+  const errorObj = Object.assign(err, defaultErr);
+  return res.send(errorObj);
+});
+
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });

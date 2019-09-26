@@ -4,6 +4,7 @@ import ReactMapGl, { Marker } from 'react-map-gl';
 
 
 const MapDisplay = props => {
+    console.log(props)
     const [viewport, setViewport] = useState({
         latitude: props.businessList[10].coordinates.latitude,
         longitude: props.businessList[10].coordinates.longitude,
@@ -15,14 +16,14 @@ const MapDisplay = props => {
     let coordinates = props.businessList.map((restaurant, idx) => {
         console.log('coordinates mapping', restaurant.address)
         return (<Marker 
-                key={idx}
-                latitude={restaurant.coordinates.latitude}
-                longitude={restaurant.coordinates.longitude}
-                >
-                <button className='markerBtn'>
-                    <img src="../assets/blue-pin.svg" alt=""/>
-                </button>
-                </Marker>)
+            key={idx}
+            latitude={restaurant.coordinates.latitude}
+            longitude={restaurant.coordinates.longitude}
+            >
+            <button className='markerBtn'>
+                <img src="../assets/blue-pin.svg" alt=""/>
+            </button>
+            </Marker>)
     })
     console.log('these are the coordinates', coordinates)
     return (
@@ -33,11 +34,10 @@ const MapDisplay = props => {
         onViewportChange={viewport => {setViewport(viewport)}}
         >
         <div>
-        
-            {coordinates} 
+        {coordinates}
         </div>
+        <button id="viewMapInMapDisplay" onClick={() => {props.viewMapFunc()}}><i className="fas fa-undo"></i></button>
         </ReactMapGl>
-
         </div>
     );
 };

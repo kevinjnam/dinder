@@ -6,8 +6,8 @@ import ReactMapGl, { Marker, Popup } from 'react-map-gl';
 const MapDisplay = props => {
     console.log(props)
     const [viewport, setViewport] = useState({
-        latitude: props.businessList[10].coordinates.latitude,
-        longitude: props.businessList[10].coordinates.longitude,
+        latitude: props.businessList[3].coordinates.latitude,
+        longitude: props.businessList[3].coordinates.longitude,
         width: '100vw',
         height: '100vh',
         zoom: 13

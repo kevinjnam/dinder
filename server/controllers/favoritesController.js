@@ -1,8 +1,4 @@
-const Pool = require('pg').Pool;
-const pool = new Pool({
-  connectionString:
-    'postgres://hddufohk:1ur6fgrvf7bVO_oN61Qbd-xr5gBuk_mi@salt.db.elephantsql.com:5432/hddufohk'
-});
+const pool = require('../database.js');
 
 // get favorites
 const getFavorites = (req, res, next) => {
@@ -35,7 +31,7 @@ const addFavorite = (req, res, next) => {
   const user = req.body.user;
 
   pool.query(
-    `INSERT INTO favorites (name, address, imgurl, yelpid, yelpurl, rating, phone, "user") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+    `INSERT INTO favorites ("name", "address", "imgurl", "yelpid", "yelpurl", "rating", "phone", "user") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
     [name, address, imgurl, yelpid, yelpurl, rating, phone, user],
     error => {
       if (error) {

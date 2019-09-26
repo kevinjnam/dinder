@@ -10,7 +10,7 @@ sessionController.isLoggedIn = (req, res, next) => {
     if (err) return next(err);
     res.locals.cookie = result.rows[0];
     res.locals.verified = 'verified';
-    console.log('in the cookie verifier', res.locals)
+    // console.log('in the cookie verifier', res.locals)
     return next();
   });
 };

@@ -36,7 +36,7 @@ class MainContainer extends Component {
         }
       )
       .then(({ data }) => {
-        console.log('IN SHOW MORE DETAIL DATA: ', data);
+        // console.log('IN SHOW MORE DETAIL DATA: ', data);
         // store the information to the state
         this.setState({
           fetchingDetails: true,

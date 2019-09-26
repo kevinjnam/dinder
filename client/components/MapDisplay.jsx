@@ -5,24 +5,24 @@ import ReactMapGl, { Marker } from 'react-map-gl';
 
 const MapDisplay = props => {
     const [viewport, setViewport] = useState({
-        latitude: 34.1053,
-        longitude: -118.352,
+        latitude: props.businessList[0].coordinates.latitude,
+        longitude: props.businessList[0].coordinates.longitude,
         width: '100vw',
         height: '100vh',
         zoom: 10
     });
 
     let coordinates = props.businessList.map((restaurant, idx) => {
-        // console.log(restaurant.coordinates)
+        console.log('coordinates mapping', restaurant.address)
         return (<Marker 
-            key={idx}
-            latitude={restaurant.coordinates.latitude}
-            longitude={restaurant.coordinates.longitude}
-            >
-            <button className='markerBtn'>
-                <img src="../assets/logo.svg" alt=""/>
-            </button>
-            </Marker>)
+                key={idx}
+                latitude={restaurant.coordinates.latitude}
+                longitude={restaurant.coordinates.longitude}
+                >
+                <button className='markerBtn'>
+                    <img src="../assets/logo.svg" alt=""/>
+                </button>
+                </Marker>)
     })
     console.log('these are the coordinates', coordinates)
     return (
@@ -33,7 +33,9 @@ const MapDisplay = props => {
         onViewportChange={viewport => {setViewport(viewport)}}
         >
         <div>
-        {coordinates}
+        {/* {props.businessList.length > 0 &&  */}
+            {coordinates}
+        // }; 
         </div>
         </ReactMapGl>
 

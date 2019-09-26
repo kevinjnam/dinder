@@ -152,9 +152,12 @@ class App extends Component {
     const user = e.target.username.value;
     const pass = e.target.password.value;
 
+    console.log('username and password', user, pass)
+
     axios
       .post('/login', { user: user, pass: pass })
       .then(res => {
+        console.log('testing response from login', res)
         if (res.data === 'verified') {
           this.setState({ verified: true, currentUser: user, rerender: true });
         }
@@ -257,6 +260,7 @@ class App extends Component {
     axios
       .get('/signedin')
       .then(res=> {
+        console.log('looking to see what is in res.data',res)
         if (res.data.verified === 'verified') {
           this.setState({ verified: true, currentUser: res.data.cookie.user, rerender: true});
         }

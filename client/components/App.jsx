@@ -60,12 +60,12 @@ class App extends Component {
     axios
       .post('/signout', {user: this.state.currentUser})
       .then(res => {
-        console.log(res)
+        console.log('signed out', res.data)
         if(res.data === 'signedOut') {
           this.setState({verified: false, currentUser: '', rerender: true})
         }
       })
-      .catch(err=> console.error(err))
+      .catch(err=> console.log(err))
   }
 
   create(e) {
@@ -76,10 +76,10 @@ class App extends Component {
       .post('/signup/create', { user: user, pass: pass })
       .then(res => { 
         if(res.data === 'user Created') {
-          this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
+          this.setState({ verified: true, currentUser: user, signup: false})
         }
       })
-      .catch(err=> console.error(err))
+      .catch(err=> console.log(err))
   }
 
   submitChoices() {
@@ -153,14 +153,17 @@ class App extends Component {
     const user = e.target.username.value;
     const pass = e.target.password.value;
 
+    console.log('username and password', user, pass)
+
     axios
       .post('/login', { user: user, pass: pass })
       .then(res => {
+        console.log('testing response from login', res)
         if (res.data === 'verified') {
           this.setState({ verified: true, currentUser: user, rerender: true });
         }
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err));
   }
 
   toggleSidebar() {
@@ -206,11 +209,9 @@ class App extends Component {
         console.log(this.state.currentUser, '<------------- current user')
         console.log(res.data, '<_---------------@@!!');
       })
-      .catch(err => console.error);
-    }
-
-    // post new favorite which is current business to the database
+      .catch(err => console.log(err));
   }
+}
 
   // function invokes when '??' button is clicked in Sidebar
   deleteFav(yelpid) {
@@ -223,7 +224,7 @@ class App extends Component {
         this.setState({ favs: updateFavs });
         console.log(res.data);
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err));
   }
 
   // function invokes when the next button is clicked in MainContainer
@@ -264,13 +265,12 @@ class App extends Component {
     axios
       .get('/signedin')
       .then(res=> {
-        console.log('back on the front end',res.data)
-        if (res.data.verified !== 'verified') {
-          console.log('hit!')
-          this.setState({ verified: true, currentUser: res.data.user, rerender: true});
+        console.log('looking to see what is in res.data',res)
+        if (res.data.verified === 'verified') {
+          this.setState({ verified: true, currentUser: res.data.cookie.user, rerender: true});
         }
       })
-      .catch(err => console.error)
+      .catch(err => console.log(err))
   }
 
   componentDidUpdate() {

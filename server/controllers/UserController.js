@@ -1,4 +1,5 @@
 const pool = require ('../database.js');
+
 const SALT_WORK_FACTOR = 10;
 const bcrypt = require('bcryptjs');
 

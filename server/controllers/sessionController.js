@@ -1,15 +1,16 @@
-const pool = require('../database.js')
+const pool = require ('../database.js');
 const uuidv4 = require('uuid/v4');
 const sessionController = {};
 
 sessionController.isLoggedIn = (req, res, next) => {
-  if (req.headers.cookie === undefined) return next();
-  const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`;
-  pool.query(queryForCookie, (err, result) => {
+  if (req.headers.cookie === undefined) return next()
+  const queryForCookie = `SELECT * from sessions WHERE "cookieId" = '${req.headers.cookie.slice(13)}'`
+  pool.query(queryForCookie, (err, result)=> {
     if (result === undefined) return next();
     if (err) return next(err);
     res.locals.cookie = result.rows[0];
     res.locals.verified = 'verified';
+    console.log('in the cookie verifier', res.locals)
     return next();
   });
 };

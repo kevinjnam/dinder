@@ -1,4 +1,4 @@
-const pool = require('../database.js');
+const pool = require ('../database.js');
 
 // get favorites
 const getFavorites = (req, res, next) => {
@@ -47,7 +47,7 @@ const addFavorite = (req, res, next) => {
 const deleteFavorite = (req, res, next) => {
   const { currentUser, yelpid } = req.body;
   pool.query(
-    `DELETE FROM favorites WHERE "user" = $1 AND yelpid = $2`,
+    `DELETE FROM favorites WHERE "user" = $1 AND "yelpid" = $2`,
     [currentUser, yelpid],
     error => {
       if (error) {

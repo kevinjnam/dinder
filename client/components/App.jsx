@@ -31,7 +31,8 @@ class App extends Component {
       mapView: false,
       location: LOCATION_SEARCHED,
       cuisine: null,
-      index: 0
+      index: 0,
+      // selectedRestaurant: null
     };
 
     this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -49,6 +50,7 @@ class App extends Component {
     this.handleCuisineChange = this.handleCuisineChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.viewMap = this.viewMap.bind(this);
+    // this.displayRestaurant = this.displayRestaurant.bind(this);
     this.audio = new Audio(
       'https://iringtone.net/rington/file?id=8454&type=sound&name=mp3'
     );
@@ -350,6 +352,10 @@ class App extends Component {
   viewMap() {
     this.setState({mapView: !this.state.mapView});
   }
+
+//   displayRestaurant(selectedRestaurant) {
+//     this.setState({selectedRestaurant: selectedRestaurant});
+// }
 
   render() {
     

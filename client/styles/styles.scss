@@ -242,7 +242,7 @@ button,
   height: 60px;
   font-size: 16px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 10px;
   margin: 0 10px;
   position: relative;
   cursor: pointer;
@@ -331,7 +331,7 @@ button,
 }
 
 // popup
-.popup {
+.favPopup {
   max-height: 80%;
   overflow: auto;
   background: #fff;
@@ -343,7 +343,7 @@ button,
   right: 0;
   z-index: 2;
 
-  .popup-header {
+  .favPopup-header {
     display: flex;
     justify-content: space-between;
     align-items: center;

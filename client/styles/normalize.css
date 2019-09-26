@@ -347,3 +347,43 @@ template {
 [hidden] {
   display: none;
 }
+
+.popup {
+  margin: 0;
+  padding: 0;
+  width: 15%;
+  height: 15%;
+  border-radius: 20px;
+  margin-radius: 20px;
+}
+
+.mapboxgl-popup-close-button {
+  width: 60px;
+  height: 60px;
+  font-size: 60px;
+  padding: 10px;
+  margin-radius: 20px;
+}
+
+.popup.mapboxgl-popup {
+  border-radius: 20px;
+  padding: 10px;
+  margin-radius: 20px;
+}
+
+.mapboxgl-popup-anchor-left {
+  border-radius: 20px;
+  padding: 10px;
+  margin-radius: 20px;
+}
+
+.popupImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+}
+
+.popup.mapboxgl-popup-content{
+  border-radius: 20px;
+  margin-radius: 20px;
+}

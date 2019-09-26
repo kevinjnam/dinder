@@ -16,7 +16,7 @@ class App extends Component {
     this.state = {
       businessList: [],
       currentIndex: 0,
-      visited: {},
+      visited: new Array(50),
       favs: [],
       fetchingDetails: false,
       isSidebarOpen: false,
@@ -28,7 +28,10 @@ class App extends Component {
       play: false,
       price: null,
       offset: 0,
-      mapView: false
+      mapView: false,
+      location: LOCATION_SEARCHED,
+      cuisine: null,
+      index: 0
     };
 
     this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -42,6 +45,8 @@ class App extends Component {
     this.signup = this.signup.bind(this);
     this.signout = this.signout.bind(this);
     this.submitChoices = this.submitChoices.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleCuisineChange = this.handleCuisineChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.viewMap = this.viewMap.bind(this);
     this.audio = new Audio(
@@ -62,8 +67,8 @@ class App extends Component {
           this.setState({verified: false, currentUser: '', rerender: true})
         }
       })
-      .catch(err=> console.error(err))
-  };
+      .catch(err=> console.log(err))
+  }
 
   create(e) {
     e.preventDefault();
@@ -73,17 +78,16 @@ class App extends Component {
       .post('/signup/create', { user: user, pass: pass })
       .then(res => { 
         if(res.data === 'user Created') {
-          this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
+          this.setState({ verified: true, currentUser: user, signup: false})
         }
       })
-      .catch(err=> console.error)
+      .catch(err=> console.log(err))
   }
 
-
-  submitChoices(e) {
-    e.preventDefault();
-    const location = e.target.location.value || LOCATION_SEARCHED;
-    const cuisine = e.target.cuisine.value || 'restaurant';
+  submitChoices() {
+    console.log(this.state.location, this.state.cuisine, this.state.price);
+    const location = this.state.location || LOCATION_SEARCHED;
+    const cuisine = this.state.cuisine || 'restaurant';
     const price = this.state.price || '7';
     axios
       .get(
@@ -134,6 +138,14 @@ class App extends Component {
     this.setState({price: e.target.value});
   }
 
+  handleLocationChange(e) {
+    this.setState({location: e.target.value});
+  }
+
+  handleCuisineChange(e) {
+    this.setState({cuisine: e.target.value});
+  }
+
 
   //login functions
   verify(e) {
@@ -141,15 +153,17 @@ class App extends Component {
     const user = e.target.username.value;
     const pass = e.target.password.value;
 
+    // console.log('username and password', user, pass)
 
     axios
       .post('/login', { user: user, pass: pass })
       .then(res => {
+        console.log('testing response from login', res)
         if (res.data === 'verified') {
           this.setState({ verified: true, currentUser: user, rerender: true });
         }
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err));
   }
 
   toggleSidebar() {
@@ -160,9 +174,13 @@ class App extends Component {
 
   // function invokes when the heart button is clicked in MainContainer
   addFav() {
-    
+    if(this.state.index === 40) {
+      this.setState({offset: this.state.offset + 50, visited: new Array(50), index: 0})
+      this.submitChoices();
+    }
+    else {
     let favs = this.state.favs.slice();
-    let visited = Object.assign(this.state.visited);
+    let visited = this.state.visited.slice();
 
     favs.push(this.state.businessList[this.state.currentIndex]);
     visited[this.state.currentIndex] = true;
@@ -178,20 +196,22 @@ class App extends Component {
       currentIndex,
       visited,
       favs,
-      fetchingDetails: false
+      fetchingDetails: false,
+      index: this.state.index+1
     });
 
-    // post new favorite which is current business to the database
     axios
       .post('/favorites', {
         business: this.state.businessList[this.state.currentIndex],
         user: this.state.currentUser
       })
-      // .then(res => {
-      //   console.log(res.data);
-      // })
-      .catch(err => console.error);
+      .then(res => {
+        console.log(this.state.currentUser, '<------------- current user')
+        console.log(res.data, '<_---------------@@!!');
+      })
+      .catch(err => console.log(err));
   }
+}
 
   // function invokes when '??' button is clicked in Sidebar
   deleteFav(yelpid) {
@@ -203,12 +223,17 @@ class App extends Component {
         const updateFavs = this.state.favs.filter(fav => fav.yelpid !== yelpid);
         this.setState({ favs: updateFavs });
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err));
   }
 
   // function invokes when the next button is clicked in MainContainer
   moveNext() {
-    let visited = Object.assign(this.state.visited);
+    if(this.state.index === 40) {
+      this.setState({offset: this.state.offset + 50, visited: new Array(50), index: 0})
+      this.submitChoices();
+    }
+    else {
+    let visited = this.state.visited.slice();
     visited[this.state.currentIndex] = true;
 
     let currentIndex = getRandomNum(MAX_SIZE);
@@ -220,8 +245,10 @@ class App extends Component {
     this.setState({
       currentIndex,
       visited,
-      fetchingDetails: false
+      fetchingDetails: false,
+      index: this.state.index+1
     });
+  }
   }
 
   secret() {
@@ -237,12 +264,12 @@ class App extends Component {
     axios
       .get('/signedin')
       .then(res=> {
-
+        // console.log('looking to see what is in res.data',res)
         if (res.data.verified === 'verified') {
-          this.setState({ verified: true, currentUser: res.data.user, rerender: true});
+          this.setState({ verified: true, currentUser: res.data.cookie.user, rerender: true});
         }
       })
-      .catch(err => console.error);
+      .catch(err => console.log(err))
   }
   
   componentDidUpdate() {
@@ -372,6 +399,8 @@ class App extends Component {
           secret={this.secret}
           pressPlay={this.pressPlay}
           handleOptionChange={this.handleOptionChange}
+          handleLocationChange={this.handleLocationChange}
+          handleCuisineChange={this.handleCuisineChange}
           price={this.state.price}
           businessList={this.state.businessList}
           signout={this.signout}

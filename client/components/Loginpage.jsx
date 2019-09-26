@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const Login = ({ verification, signup }) => {
+const Login = ({ verification, signup, yelpAuth }) => {
   return (
     <div className='modal' id='login'>
       <div className='login-header'>
@@ -23,6 +23,7 @@ const Login = ({ verification, signup }) => {
         </button>
       </form>
       <button className='sign-up' onClick={() => signup()}>Need an account?<br/>Sign up here...</button>
+
     </div>
   );
 };

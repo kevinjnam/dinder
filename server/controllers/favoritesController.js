@@ -2,7 +2,7 @@ const pool = require ('../database.js');
 
 // get favorites
 const getFavorites = (req, res, next) => {
-  arr = [req.body.user];
+  const arr = [req.body.user];
   pool.query(
     `SELECT * FROM favorites WHERE "user" = $1 ORDER BY _id`,
     arr,

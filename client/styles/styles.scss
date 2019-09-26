@@ -54,7 +54,7 @@ img {
   justify-content: center;
   align-items: center;
   width: 44px;
-  background: navy;
+  background: #000080;
   border-radius: 5px;
   padding: 10px;
   z-index: 1;
@@ -421,4 +421,14 @@ button,
   75% {
     transform: rotate(10deg);
   }
+}
+
+.markerBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.markerBtn img{
+  width: 27.5px;
+  height: 30px;
 }

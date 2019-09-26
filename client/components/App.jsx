@@ -5,6 +5,7 @@ import axios from 'axios';
 import key from '../../config/keys';
 import Login from './Loginpage.jsx';
 import Signup from './SignupPage.jsx';
+import MapDisplay from './MapDisplay.jsx';
 
 const LOCATION_SEARCHED = '1600 Main St 1st floor, Venice, CA 90291';
 let MAX_SIZE = 0;
@@ -26,9 +27,10 @@ class App extends Component {
       dance: false,
       play: false,
       price: null,
+      offset: 0,
+      mapView: false,
       location: LOCATION_SEARCHED,
       cuisine: null,
-      offset: 0,
       index: 0
     };
 
@@ -46,6 +48,7 @@ class App extends Component {
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleCuisineChange = this.handleCuisineChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.viewMap = this.viewMap.bind(this);
     this.audio = new Audio(
       'https://iringtone.net/rington/file?id=8454&type=sound&name=mp3'
     );
@@ -60,7 +63,6 @@ class App extends Component {
     axios
       .post('/signout', {user: this.state.currentUser})
       .then(res => {
-        console.log('signed out', res.data)
         if(res.data === 'signedOut') {
           this.setState({verified: false, currentUser: '', rerender: true})
         }
@@ -108,7 +110,6 @@ class App extends Component {
         // create state businessList with necessary infos
         let businessList = [];
         for (let restaurant of res.data.businesses) {
-          console.log(restaurant)
           const businessObj = {
             yelpid: restaurant.id,
             name: restaurant.name,
@@ -125,7 +126,6 @@ class App extends Component {
         }
         MAX_SIZE = businessList.length;
         const currentIndex = getRandomNum(MAX_SIZE);
-
         this.setState({
           businessList,
           currentIndex,
@@ -153,7 +153,7 @@ class App extends Component {
     const user = e.target.username.value;
     const pass = e.target.password.value;
 
-    console.log('username and password', user, pass)
+    // console.log('username and password', user, pass)
 
     axios
       .post('/login', { user: user, pass: pass })
@@ -222,7 +222,6 @@ class App extends Component {
       .then(res => {
         const updateFavs = this.state.favs.filter(fav => fav.yelpid !== yelpid);
         this.setState({ favs: updateFavs });
-        console.log(res.data);
       })
       .catch(err => console.log(err));
   }
@@ -265,14 +264,14 @@ class App extends Component {
     axios
       .get('/signedin')
       .then(res=> {
-        console.log('looking to see what is in res.data',res)
+        // console.log('looking to see what is in res.data',res)
         if (res.data.verified === 'verified') {
           this.setState({ verified: true, currentUser: res.data.cookie.user, rerender: true});
         }
       })
       .catch(err => console.log(err))
   }
-
+  
   componentDidUpdate() {
     if (this.state.rerender) {
       // get data from yelp business endpoint
@@ -303,11 +302,12 @@ class App extends Component {
               imgurl: restaurant.image_url,
               yelpurl: restaurant.url,
               rating: restaurant.rating,
-              phone: restaurant.phone
+              phone: restaurant.phone,
+              coordinates: restaurant.coordinates
             };
             businessList.push(businessObj);
+            console.log(businessObj.coordinates)
           }
-          // console.log('business list in fucking app.kjsx', businessList[0]);
           // get favorites from back end database
           axios
             .post('/favorites/fav', { user: this.state.currentUser })
@@ -333,8 +333,6 @@ class App extends Component {
                 favs,
                 rerender: false
               });
-              // console.log("this.state.businessList: ", this.state.businessList);
-              // console.log("this.state.favs: ", this.state.favs);
             })
             .catch(err =>
               console.log(`App.componentDidMount: get favorites: Error: ${err}`)
@@ -348,7 +346,12 @@ class App extends Component {
     }
   }
 
+  viewMap() {
+    this.setState({mapView: true});
+  }
+
   render() {
+    
     if (this.state.signup === true) {
       return (
         <main>
@@ -372,6 +375,15 @@ class App extends Component {
         </main>
       );
     }
+    
+    if (this.state.mapView === true) {
+      console.log('props for coordinates being passed down', this.state.businessList)
+      return (
+        <MapDisplay 
+        viewMap={this.state.viewMap}
+        businessList={this.state.businessList} />
+        )
+      }
 
     let dance = this.state.dance ? 'dance' : '';
 
@@ -392,6 +404,7 @@ class App extends Component {
           price={this.state.price}
           businessList={this.state.businessList}
           signout={this.signout}
+          viewMap={this.viewMap}
         />
         <MainContainer
           currentBusiness={this.state.businessList[this.state.currentIndex]}

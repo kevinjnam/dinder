@@ -36,6 +36,7 @@ class Sidebar extends Component {
           <button className='next' onClick={() => deleteFav(fav.yelpid)}>
             <i className='fa fa-times'></i>
           </button>
+          
         </li>
       );
     });
@@ -107,15 +108,17 @@ class Sidebar extends Component {
             </button>
            </div>
            <div className="navBar-buttons">
-            <button
-              className='history'
+           <button id="viewMap" 
+           onClick={() => this.props.viewMap()}>View Map</button>
+          <button className='history'
               onClick={() => {
                 toggleSidebar();
                 favs;
-              }}
-            >
+              }}>
+              
               <i className='fa fa-history'></i>
             </button>
+            </div>
             <button
               className='signout button'
               onClick={() => {
@@ -124,7 +127,6 @@ class Sidebar extends Component {
               <i className="fas fa-sign-out-alt"></i>
             </button>
            </div>
-        </div>
       </nav>
     );
   }

@@ -5,11 +5,11 @@ import ReactMapGl, { Marker } from 'react-map-gl';
 
 const MapDisplay = props => {
     const [viewport, setViewport] = useState({
-        latitude: props.businessList[0].coordinates.latitude,
-        longitude: props.businessList[0].coordinates.longitude,
+        latitude: props.businessList[10].coordinates.latitude,
+        longitude: props.businessList[10].coordinates.longitude,
         width: '100vw',
         height: '100vh',
-        zoom: 10
+        zoom: 13
     });
 
     let coordinates = props.businessList.map((restaurant, idx) => {
@@ -20,7 +20,7 @@ const MapDisplay = props => {
                 longitude={restaurant.coordinates.longitude}
                 >
                 <button className='markerBtn'>
-                    <img src="../assets/logo.svg" alt=""/>
+                    <img src="../assets/blue-pin.svg" alt=""/>
                 </button>
                 </Marker>)
     })
@@ -29,13 +29,12 @@ const MapDisplay = props => {
         <div className='MapDisplay'>
         <ReactMapGl {...viewport}
         mapboxApiAccessToken={'pk.eyJ1IjoiZGFtZW5leXJvIiwiYSI6ImNrMHpuYmw4ZTAyaWozY21wNTZjd3VrNnQifQ.wwTTRLbq1G9ARNagBeeY8g'}
-        mapStyle={'mapbox://styles/dameneyro/ck1046iuf0mbx1djxyjdw6fxy'}
+        mapStyle={'mapbox://styles/dameneyro/ck0zsvgrj0bnk1crzaia78md8'}
         onViewportChange={viewport => {setViewport(viewport)}}
         >
         <div>
-        {/* {props.businessList.length > 0 &&  */}
-            {coordinates}
-        // }; 
+        
+            {coordinates} 
         </div>
         </ReactMapGl>
 

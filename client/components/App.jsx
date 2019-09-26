@@ -120,7 +120,8 @@ class App extends Component {
             imgurl: restaurant.image_url,
             yelpurl: restaurant.url,
             rating: restaurant.rating,
-            phone: restaurant.phone
+            phone: restaurant.phone,
+            coordinates: restaurant.coordinates
           };
           businessList.push(businessObj);
         }
@@ -377,7 +378,7 @@ class App extends Component {
     }
     
     if (this.state.mapView === true) {
-      console.log('props for coordinates being passed down', this.state.businessList)
+      console.log('these are the props being passed down', this.state.businessList)
       return (
         <MapDisplay 
         viewMap={this.state.viewMap}

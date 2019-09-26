@@ -78,7 +78,7 @@ class App extends Component {
       .post('/signup/create', { user: user, pass: pass })
       .then(res => { 
         if(res.data === 'user Created') {
-          this.setState({ verified: true, currentUser: user, signup: false})
+          this.setState({ verified: true, currentUser: user, signup: false, rerender: true})
         }
       })
       .catch(err=> console.log(err))

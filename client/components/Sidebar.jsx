@@ -67,8 +67,8 @@ class Sidebar extends Component {
               </button>
             </div>
           </nav>
-          <div className='popup'>
-            <div className='popup-header'>
+          <div className='favPopup'>
+            <div className='favPopup-header'>
               <h2>Favorites:</h2>
               <button className='back' onClick={() => toggleSidebar()}>
                 <i className='fa fa-arrow-left'></i>
@@ -108,7 +108,7 @@ class Sidebar extends Component {
             </button>
            </div>
            <div className="navBar-buttons">
-              <button id="viewMap" onClick={() => this.props.viewMap()}><i class="fas fa-map-marked-alt"></i></button>
+              <button id="viewMap" onClick={() => this.props.viewMap()}><i className="fas fa-map-marked-alt"></i></button>
               <button className='history' onClick={() => {
                 toggleSidebar();
                 favs;

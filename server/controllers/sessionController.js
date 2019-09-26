@@ -1,10 +1,12 @@
-const Pool = require("pg").Pool;
+// const Pool = require("pg").Pool;
 const uuidv4 = require('uuid/v4')
-let url =
-	"postgres://hddufohk:1ur6fgrvf7bVO_oN61Qbd-xr5gBuk_mi@salt.db.elephantsql.com:5432/hddufohk";
-const pool = new Pool({
-	connectionString: url
-});
+// let url =
+// 	"postgres://kgcddhnh:KavuQz1fDvPlhVJdFwZbiLQMkMm2n_tY@salt.db.elephantsql.com:5432/kgcddhnh";
+// const pool = new Pool({
+// 	connectionString: url
+// });
+
+const pool = require('../Database.js')
 
 const sessionController = {};
 

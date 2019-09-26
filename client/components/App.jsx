@@ -43,7 +43,7 @@ class App extends Component {
     this.signout = this.signout.bind(this);
     this.submitChoices = this.submitChoices.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
-    // this.viewMap = this.viewMap.bind(this);
+    this.viewMap = this.viewMap.bind(this);
     this.audio = new Audio(
       'https://iringtone.net/rington/file?id=8454&type=sound&name=mp3'
     );
@@ -58,7 +58,6 @@ class App extends Component {
     axios
       .post('/signout', {user: this.state.currentUser})
       .then(res => {
-        console.log(res)
         if(res.data === 'signedOut') {
           this.setState({verified: false, currentUser: '', rerender: true})
         }
@@ -70,11 +69,9 @@ class App extends Component {
     e.preventDefault();
     const user = e.target.username.value;
     const pass = e.target.password.value;
-    console.log('these are the input values', user, pass)
     axios
       .post('/signup/create', { user: user, pass: pass })
       .then(res => { 
-        console.log(res);
         if(res.data === 'user Created') {
           this.setState({ verified: true, currentUser: user, rerender: true, signup: false})
         }
@@ -109,7 +106,6 @@ class App extends Component {
         // create state businessList with necessary infos
         let businessList = [];
         for (let restaurant of res.data.businesses) {
-          console.log(restaurant)
           const businessObj = {
             yelpid: restaurant.id,
             name: restaurant.name,
@@ -145,7 +141,6 @@ class App extends Component {
     const user = e.target.username.value;
     const pass = e.target.password.value;
 
-    console.log('data to login')
 
     axios
       .post('/login', { user: user, pass: pass })
@@ -165,8 +160,6 @@ class App extends Component {
 
   // function invokes when the heart button is clicked in MainContainer
   addFav() {
-    console.log(this.state.businessList, '<--- businessList')
-    console.log(this.state.visited, '<--- visited')
     
     let favs = this.state.favs.slice();
     let visited = Object.assign(this.state.visited);
@@ -194,9 +187,9 @@ class App extends Component {
         business: this.state.businessList[this.state.currentIndex],
         user: this.state.currentUser
       })
-      .then(res => {
-        console.log(res.data);
-      })
+      // .then(res => {
+      //   console.log(res.data);
+      // })
       .catch(err => console.error);
   }
 
@@ -209,7 +202,6 @@ class App extends Component {
       .then(res => {
         const updateFavs = this.state.favs.filter(fav => fav.yelpid !== yelpid);
         this.setState({ favs: updateFavs });
-        console.log(res.data);
       })
       .catch(err => console.error);
   }
@@ -250,7 +242,7 @@ class App extends Component {
           this.setState({ verified: true, currentUser: res.data.user, rerender: true});
         }
       })
-      .catch(err => console.error)
+      .catch(err => console.error);
   }
   
   componentDidUpdate() {
@@ -273,7 +265,6 @@ class App extends Component {
           // create state businessList with necessary infos
           let businessList = [];
           for (let restaurant of res.data.businesses) {
-            console.log(restaurant)
             const businessObj = {
               yelpid: restaurant.id,
               name: restaurant.name,
@@ -285,11 +276,11 @@ class App extends Component {
               yelpurl: restaurant.url,
               rating: restaurant.rating,
               phone: restaurant.phone,
-              // coordinates: restaurant.coordinates
+              coordinates: restaurant.coordinates
             };
             businessList.push(businessObj);
+            console.log(businessObj.coordinates)
           }
-          // console.log('business list in fucking app.kjsx', businessList[0]);
           // get favorites from back end database
           axios
             .post('/favorites/fav', { user: this.state.currentUser })
@@ -315,8 +306,6 @@ class App extends Component {
                 favs,
                 rerender: false
               });
-              // console.log("this.state.businessList: ", this.state.businessList);
-              // console.log("this.state.favs: ", this.state.favs);
             })
             .catch(err =>
               console.log(`App.componentDidMount: get favorites: Error: ${err}`)
@@ -330,10 +319,9 @@ class App extends Component {
     }
   }
 
-  // viewMap() {
-  //   console.log('in viewMap')
-  //   this.setState({mapView: true});
-  // }
+  viewMap() {
+    this.setState({mapView: true});
+  }
 
   render() {
     
@@ -362,9 +350,11 @@ class App extends Component {
     }
     
     if (this.state.mapView === true) {
+      console.log('props for coordinates being passed down', this.state.businessList)
       return (
         <MapDisplay 
-        viewMap={this.state.viewMap} />
+        viewMap={this.state.viewMap}
+        businessList={this.state.businessList} />
         )
       }
 
@@ -391,7 +381,6 @@ class App extends Component {
           currentBusiness={this.state.businessList[this.state.currentIndex]}
           addFav={this.addFav}
           moveNext={this.moveNext}
-          
         />
       </div>
     );

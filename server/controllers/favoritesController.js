@@ -6,11 +6,8 @@ const getFavorites = (req, res, next) => {
   pool.query(
     `SELECT * FROM favorites WHERE "user" = $1 ORDER BY _id`,
     arr,
-    (error, favorites) => {
-      if (error) {
-        res.json(error);
-      }
-
+    (err, favorites) => {
+      if (err) return next(err);
       res.locals.favorites = favorites.rows;
       return next();
     }
@@ -33,10 +30,9 @@ const addFavorite = (req, res, next) => {
   pool.query(
     `INSERT INTO favorites ("name", "address", "imgurl", "yelpid", "yelpurl", "rating", "phone", "user") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
     [name, address, imgurl, yelpid, yelpurl, rating, phone, user],
-    error => {
-      if (error) {
-        res.json(error);
-      } else {
+    (err, result) => {
+      if (err) return next(err);
+      else {
         return next();
       }
     }
@@ -49,10 +45,9 @@ const deleteFavorite = (req, res, next) => {
   pool.query(
     `DELETE FROM favorites WHERE "user" = $1 AND "yelpid" = $2`,
     [currentUser, yelpid],
-    error => {
-      if (error) {
-        res.json(error);
-      } else {
+    (err, result) => {
+      if (err) return next(err);
+      else {
         return next();
       }
     }

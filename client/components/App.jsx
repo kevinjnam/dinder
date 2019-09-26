@@ -15,7 +15,7 @@ class App extends Component {
     this.state = {
       businessList: [],
       currentIndex: 0,
-      visited: [],
+      visited: new Array(50),
       favs: [],
       fetchingDetails: false,
       isSidebarOpen: false,
@@ -28,7 +28,8 @@ class App extends Component {
       price: null,
       location: LOCATION_SEARCHED,
       cuisine: null,
-      offset: 0
+      offset: 0,
+      index: 0
     };
 
     this.toggleSidebar = this.toggleSidebar.bind(this);
@@ -173,12 +174,11 @@ class App extends Component {
 
   // function invokes when the heart button is clicked in MainContainer
   addFav() {
-    if(this.state.visited.length % 50 === 49) {
+    if(this.state.index === 40) {
+      this.setState({offset: this.state.offset + 50, visited: new Array(50), index: 0})
       this.submitChoices();
     }
-    console.log(this.state.businessList, '<--- businessList')
-    console.log(this.state.visited, '<--- visited')
-    
+    else {
     let favs = this.state.favs.slice();
     let visited = this.state.visited.slice();
 
@@ -196,20 +196,22 @@ class App extends Component {
       currentIndex,
       visited,
       favs,
-      fetchingDetails: false
+      fetchingDetails: false,
+      index: this.state.index+1
     });
 
-    // post new favorite which is current business to the database
     axios
       .post('/favorites', {
         business: this.state.businessList[this.state.currentIndex],
         user: this.state.currentUser
       })
       .then(res => {
-        console.log(res.data);
+        console.log(this.state.currentUser, '<------------- current user')
+        console.log(res.data, '<_---------------@@!!');
       })
       .catch(err => console.log(err));
   }
+}
 
   // function invokes when '??' button is clicked in Sidebar
   deleteFav(yelpid) {
@@ -227,11 +229,12 @@ class App extends Component {
 
   // function invokes when the next button is clicked in MainContainer
   moveNext() {
-    if(Object.keys(this.state.visited).length % 50 === 49) {
+    if(this.state.index === 40) {
+      this.setState({offset: this.state.offset + 50, visited: new Array(50), index: 0})
       this.submitChoices();
     }
-
-    let visited = Object.assign(this.state.visited);
+    else {
+    let visited = this.state.visited.slice();
     visited[this.state.currentIndex] = true;
 
     let currentIndex = getRandomNum(MAX_SIZE);
@@ -243,8 +246,10 @@ class App extends Component {
     this.setState({
       currentIndex,
       visited,
-      fetchingDetails: false
+      fetchingDetails: false,
+      index: this.state.index+1
     });
+  }
   }
 
   secret() {

@@ -15,6 +15,7 @@ const verifyUser = (req, res, next) => {
   })
 }
 
+
 const createUser = (req, res, next) => {
   if (!req.body.user || !req.body.pass) return res.render('/signup', {error: 'Please properly format the username and password'});
   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {

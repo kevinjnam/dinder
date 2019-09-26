@@ -4,6 +4,7 @@ import ReactMapGl, { Marker } from 'react-map-gl';
 
 
 const MapDisplay = props => {
+    console.log(props)
     const [viewport, setViewport] = useState({
         latitude: 34.1053,
         longitude: -118.352,
@@ -35,8 +36,8 @@ const MapDisplay = props => {
         <div>
         {coordinates}
         </div>
+        <button id="viewMapInMapDisplay" onClick={() => {props.viewMapFunc()}}><i className="fas fa-undo"></i></button>
         </ReactMapGl>
-
         </div>
     );
 };

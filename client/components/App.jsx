@@ -347,7 +347,7 @@ class App extends Component {
   }
 
   viewMap() {
-    this.setState({mapView: true});
+    this.setState({mapView: !this.state.mapView});
   }
 
   render() {
@@ -381,8 +381,11 @@ class App extends Component {
       return (
         <MapDisplay 
         viewMap={this.state.viewMap}
+        viewMapFunc={this.viewMap}
         businessList={this.state.businessList} />
         )
+      } else {
+        console.log('here in post change of state');
       }
 
     let dance = this.state.dance ? 'dance' : '';
